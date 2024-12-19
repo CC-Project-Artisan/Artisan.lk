@@ -2,7 +2,7 @@
 
 <section class="sub-listing-container">
     <div class="sub-listing-content">
-        <div class="sub-listing-content-up">
+        <div class="sub-listing-content-up w-full justify-between">
             <div class="main-img-wrapper">
                 @if(isset($product->productImages) && !empty($product->productImages))
                 @php
@@ -18,7 +18,14 @@
                 @endif
             </div>
             <div class="sub-listing-info">
-                <label class="sub-listing-title">New Order ID #{{ $order->id }}</label>
+                <div class="flex justify-between items-start">
+                    <label class="sub-listing-title">
+                        @if($order->order_status === 'pending' || $order->order_status === 'accepted')
+                        New
+                        @endif
+                        Order ID #{{ $order->id }}</label>
+
+                </div>
                 <div class="sub-listing-features-container">
                     <h1 class="text-customBrown font-semibold tracking-wide mt-2">Order Detials</h1>
                     <div class="sub-listing-features">
@@ -27,26 +34,42 @@
                                 <label class="sub-listing-feature-value">Order ID: {{ $order->id }}</label>
                             </div>
                             <div class="sub-listing-feature">
-                                <label class="sub-listing-feature-value">Order Pleced At: {{ $order->created_at->format('Y-m-d') }}</label>
+                                <label class="sub-listing-feature-value">Product Name: {{ $product->productName }}</label>
                             </div>
+                            @foreach ($order->orderItems as $orderItem)
                             <div class="sub-listing-feature">
-                                <label class="sub-listing-feature-value">Order Quantity: {{ $order->orderItems->count() }}{{ $order->city }}</label>
+                                <label class="sub-listing-feature-value">Order Quantity: {{ $orderItem->quantity }}</label>
                             </div>
+                            @endforeach
                             <div class="sub-listing-feature">
                                 <label class="sub-listing-feature-value">Order Amout: Rs. {{ number_format($order->total, 2) }}/=</label>
                             </div>
                             <div class="sub-listing-feature">
-                                <label class="sub-listing-feature-value">Payment Status: {{ ucfirst($order->status) }}</label>
-                            </div>
-                            <div class="sub-listing-feature">
-                                <label class="sub-listing-feature-value">Payment ID: {{ $order->stripe_payment_id }}</label>
+                                <!-- <label class="sub-listing-feature-value">Payment Status: {{ ucfirst($order->status) }}</label> -->
+                                <label class="sub-listing-feature-value">Order Pleced At: {{ $order->created_at->format('Y-m-d') }}</label>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- show order status -->
+            <div class="mt-3">
+                @if($order->order_status === 'pending')
+                <label for="pending" class="status-label py-1 mr-3 px-3 rounded-md" style="color: white; background-color: orange; font-size: medium;">Pending Order</label>
+                @elseif($order->order_status === 'accepted')
+                <label for="active" class="status-label py-1 mr-3 px-3 rounded-md" style="color: white; background-color: blue; font-size: medium;">Accepted Order</label>
+                @elseif($order->order_status === 'processing')
+                <label for="deactive" class="status-label py-1 mr-3 px-3 rounded-md" style="color: white; background-color: rgb(208, 208, 53); font-size: medium;">Processing Order</label>
+                @elseif($order->order_status === 'shipped')
+                <label for="expired" class="status-label py-1 mr-3 px-3 rounded-md" style="color: white; background-color: purple; font-size: medium;">Shipped Order</label>
+                @elseif($order->order_status === 'delivered')
+                <label for="delivered" class="status-label py-1 mr-3 px-3 rounded-md" style="color: white; background-color: green; font-size: medium;">Delivered Order</label>
+                @elseif($order->order_status === 'cancelled')
+                <label for="rejected" class="status-label py-1 mr-3 px-3 rounded-md" style="color: white; background-color: red; font-size: medium;">Rejected Order</label>
+                @endif
+            </div>
         </div>
-        <div class="sub-listing-info">
+        <!-- <div class="sub-listing-info">
             <div class="sub-listing-features-container">
                 <h1 class="text-customBrown font-semibold tracking-wide mt-2">Product Detials</h1>
                 <div class="sub-listing-features">
@@ -74,7 +97,7 @@
                     @endforeach
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="savedAd-buttons">
             <div class="border-r border-customGray">
                 <a href="{{ route('show.vendor.orders.details', ['order' => $order->id]) }}" class="savedAd-view">

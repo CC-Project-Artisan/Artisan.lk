@@ -37,6 +37,11 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class, 'vendor_id');
+    }
+
     public function courierDetail()
     {
         return $this->hasOne(OrderCourierDetails::class);

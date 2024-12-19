@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\OrderItem;
 use Illuminate\Support\Facades\Auth;
 use Stripe\Stripe;
@@ -14,10 +15,17 @@ use Stripe\PaymentIntent;
 use App\Models\Cart;
 use App\Models\Delivery;
 use App\Models\SavedDeliveryData;
+use App\Notifications\Order\OrderPlaced;
 
 class CheckoutController extends Controller
 {
     // Display the checkout page with cart items and subtotal
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function Checkout()
     {
         $cartItems = [];
@@ -113,7 +121,30 @@ class CheckoutController extends Controller
                     'quantity' => $item['quantity'],
                     'price' => $item['price'],
                 ]);
+
+                // Get vendor from product and send notification
+                    // $product = Product::find($item->product_id);
+                    // if ($product && $product->vendor) {
+                    //     $product->vendor->user->notify(new OrderPlaced($order));
+                    // }
             }
+
+            // Save order items and send notifications
+            // $cartItems = json_decode($request->input('cartItems'), true);
+            // foreach ($cartItems as $item) {
+            //     OrderItem::create([
+            //         'order_id' => $order->id,
+            //         'product_id' => $item->product_id,
+            //         'quantity' => $item->quantity,
+            //         'price' => $item->price,
+            //     ]);
+
+            //     // Get vendor from product and send notification
+            //     $product = Product::find($item->product_id);
+            //     if ($product && $product->vendor) {
+            //         $product->vendor->user->notify(new OrderPlaced($order));
+            //     }
+            // }
 
             return response()->json([
                 'success' => true,

@@ -78,8 +78,8 @@
                 <li class="u-sidebar-value" data-page="myOrders" onclick="loadPage('myOrders')">
                     <i class="fa-solid fa-bag-shopping ud-icon-left"></i>
                     <i class="fa-solid fa-arrow-right-long"></i>
-                    <label for="myAdvert" class="dashboard-sidebar-title">My orders</label><br>
-                    <span class="dashboard-sidebar-sub-title">View all your orders</span>
+                    <label for="myAdvert" class="dashboard-sidebar-title">Orders</label><br>
+                    <span class="dashboard-sidebar-sub-title">Manage all your orders</span>
                 </li>
                 <li class="u-sidebar-value" data-page="myExhibitions" onclick="loadPage('myExhibitions')">
                     <i class="fa-solid fa-shop ud-icon-left"></i>
@@ -111,7 +111,7 @@
         <!-- Main Content -->
         <div class="u-dashboard-content-wrapper">
             <!-- Dashboard page -->
-            <div id="dashboard" class="ud-page-wrapper hidden">
+            <div id="dashboard" class="ud-page-wrapper">
                 <div class="p-6 bg-white rounded shadow ud-dashboard-page">
                     <div class="flex">
                         <div class="ud-profile-image-wrapper">
@@ -199,16 +199,19 @@
             </div>
 
             <!-- orders -->
-            <div id="myOrders" class="ud-page-wrapper">
+            <div id="myOrders" class="ud-page-wrapper hidden">
                 <x-compo.search
-                    :text="'Advert'"
-                    :options="['all' => 'All', 'live' => 'Live', 'rejected' => 'Rejected']"
+                    :text="'Orders'"
+                    :options="[
+                    'all' => 'All Orders', 
+                    'pending' => 'Pending',
+                    'accepted' => 'Accepted',
+                    'processing' => 'Processing',
+                    'shipped' => 'Shipped',
+                    'delivered' => 'Delivered']"
                     :keyword="request('keyword', '')"
-                    :placeholder="'Search adverts...'" />
+                    :placeholder="'Search orders...'" />
 
-
-
-                <!-- filepath: dashboard.blade.php -->
                 @forelse ($orders as $order)
                 @foreach ($order->orderItems as $orderItem)
                 <div class="mb-4">

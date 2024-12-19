@@ -90,7 +90,7 @@
         <!-- Main Content -->
         <div class="u-dashboard-content-wrapper">
             <!-- Dashboard page -->
-            <div id="dashboard" class="ud-page-wrapper hidden">
+            <div id="myOrders" class="ud-page-wrapper hidden">
                 <div class="ud-dashboard-page bg-white p-6 rounded shadow">
                     <div class="flex">
                         <div class="ud-profile-image-wrapper">
@@ -148,8 +148,21 @@
             </div>
 
             <!-- orders -->
-            <div id="myOrders" class="ud-page-wrapper hidden">
-                <x-user.user-order />
+            <div id="dashboard" class="ud-page-wrapper ">
+                @forelse ($orders as $order)
+                @foreach ($order->orderItems as $orderItem)
+                <div class="mb-4">
+                    <x-user.user-order :order="$order" :orderItem="$orderItem" :product="$orderItem->product" />
+                </div>
+                @endforeach
+                @empty
+                <div class="ud-empty-body">
+                    <i class="fa-solid fa-magnifying-glass text-[#6C757D] text-[80px]"></i>
+                    <h2 class="text-[#6C757D] text-[40px] font-bold">No orders found</h2>
+                    <span class="text-[#6C757D]">We couldn't find any records. Try changing search filters</span>
+                    <a href="{{ route('pages.shop') }}" class="ud-btn">Buy Products</a>
+                </div>
+                @endforelse
             </div>
 
             <!-- My presonal details -->

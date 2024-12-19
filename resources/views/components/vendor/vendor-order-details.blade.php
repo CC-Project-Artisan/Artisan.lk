@@ -14,10 +14,12 @@
                     <label class="order-detail-label">Order Placed At:</label>
                     <span class="order-detail-value">{{ $order->created_at->format('Y-m-d') }}</span>
                 </div>
+                @foreach ($order->orderItems as $orderItem)
                 <div class="order-detail">
                     <label class="order-detail-label">Order Quantity:</label>
-                    <span class="order-detail-value">{{ $order->orderItems->count() }}</span>
+                    <span class="order-detail-value">{{ $orderItem->quantity }}</span>
                 </div>
+                @endforeach
                 <div class="order-detail">
                     <label class="order-detail-label">Order Amount:</label>
                     <span class="order-detail-value">Rs. {{ number_format($order->total, 2) }}/=</span>
@@ -40,7 +42,7 @@
                 @csrf
                 @method('PUT')
                 <select name="order_status" class="form-select mt-3" id="order_status">
-                    <option value="pending" {{ $order->order_status == 'pending' ? 'selected' : '' }}>Pending</option>
+                    <option value="pending" {{ $order->order_status == 'pending' ? 'selected' : '' }}>Pendding</option>
                     <option value="accepted" {{ $order->order_status == 'accepted' ? 'selected' : '' }}>Accepted</option>
                     <option value="rejected" {{ $order->order_status == 'rejected' ? 'selected' : '' }}>Rejected</option>
                     <option value="processing" {{ $order->order_status == 'processing' ? 'selected' : '' }}>Processing</option>
@@ -49,16 +51,16 @@
                 </select>
 
                 @if (session('success'))
-<div class="alert alert-success mt-2" id="success-message">
-    {{ session('success') }}
-    <button onclick="closeSuccessMessage()" class="absolute top-0 right-0 px-4 py-3">
-        <svg class="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-            <title>Close</title>
-            <path d="M14.348 5.652a.5.5 0 10-.707-.707L10 8.586 6.36 4.945a.5.5 0 10-.707.708L9.293 10l-4.647 4.648a.5.5 0 00.707.708L10 11.414l3.64 3.64a.5.5 0 00.707-.707L10.707 10l4.641-4.648z" />
-        </svg>
-    </button>
-</div>
-@endif
+                <div class="alert alert-success mt-2" id="success-message">
+                    {{ session('success') }}
+                    <button onclick="closeSuccessMessage()" class="absolute top-0 right-0 px-4 py-3">
+                        <svg class="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <title>Close</title>
+                            <path d="M14.348 5.652a.5.5 0 10-.707-.707L10 8.586 6.36 4.945a.5.5 0 10-.707.708L9.293 10l-4.647 4.648a.5.5 0 00.707.708L10 11.414l3.64 3.64a.5.5 0 00.707-.707L10.707 10l4.641-4.648z" />
+                        </svg>
+                    </button>
+                </div>
+                @endif
 
                 <div id="courier-details" style="display: none;">
                     <div class="mt-3">
@@ -197,19 +199,7 @@
         orderStatusSelect.dispatchEvent(new Event('change'));
     });
 
-    function showSuccess() {
-        const successMessage = document.getElementById('success-message');
-        successMessage.classList.remove('hidden');
-        successMessage.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center'
-        });
 
-        // Auto hide after 5 seconds
-        setTimeout(() => {
-            closeSuccessMessage();
-        }, 10000);
-    }
 
     function closeSuccessMessage() {
         document.getElementById('success-message').style.display = 'none';

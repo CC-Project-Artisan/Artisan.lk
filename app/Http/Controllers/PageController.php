@@ -13,6 +13,7 @@ use App\Models\ExhibitionContact;
 use App\Models\ExhibitionEmail;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\OrderCourierDetails;
 
 class PageController extends Controller
 {
@@ -31,7 +32,7 @@ class PageController extends Controller
     //Product Page
     public function productView()
     {
-        
+
         return view('pages.product-display');
     }
 
@@ -89,9 +90,36 @@ class PageController extends Controller
             $products = Product::all();
 
 
+
             switch ($role) {
                 case 'vendor':
                     $vendor = Vendor::where('user_id', $user->id)->first();
+
+                    // show related products
+                    $products = Product::where('id', $vendor->id)->get();
+
+                    $orders = Order::whereHas('orderItems', function ($query) use ($vendor) {
+                        $query->whereIn('product_id', function ($subquery) use ($vendor) {
+                            $subquery->select('id')
+                                ->from('products')
+                                ->where('id', $vendor->id);
+                        });
+                    })
+                        ->with(['orderItems' => function ($query) use ($vendor) {
+                            $query->whereIn('product_id', function ($subquery) use ($vendor) {
+                                $subquery->select('id')
+                                    ->from('products')
+                                    ->where('id', $vendor->id);
+                            });
+                        }])
+                        ->orderByRaw("CASE 
+                        WHEN order_status = 'pending' THEN 1 
+                        WHEN order_status = 'accepted' THEN 2
+                        WHEN order_status = 'processing' THEN 3
+                        WHEN order_status = 'rejected' THEN 4
+                        ELSE 5 END")
+                        ->paginate(2);
+
                     if ($vendor) {
                         return view(
                             'vendor.dashboard',
@@ -110,6 +138,9 @@ class PageController extends Controller
                         return view('welcome');
                     }
                 case 'user':
+                    $orders = Order::where('user_id', $user->id)
+                        ->with('courierDetail')  // Add this line to eager load courier details
+                        ->get();
                     return view(
                         'user.dashboard',
                         compact(

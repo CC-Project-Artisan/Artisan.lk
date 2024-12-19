@@ -19,20 +19,15 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
+//Profile Routes
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+//Dashboard Routes
+Route::get('/dashboard', [PageController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 //Page Routes
 Route::get('/', [PageController::class, 'index'])->name('welcome');
@@ -43,6 +38,19 @@ Route::get('/product-display', [PageController::class, 'productView'])->name('pa
 Route::get('/cart', [PageController::class, 'cartview'])->name('pages.cart');
 Route::get('/checkout', [PageController::class, 'checkoutview'])->name('pages.checkout');
 
+//Exhibition Routes
+Route::middleware(['auth'])->group(function () {
+    // redirect to the correct layout
+    Route::get('/preview', [ExhibitionController::class, 'preview'])->name('preview');
+    Route::post('/preview', [ExhibitionController::class, 'preview'])->name('preview.post');
+});
+Route::get('/exhibition/{id}', [ExhibitionController::class, 'exhibitionShow'])->name('exhibition.show');
+Route::get('/exhibition/vendor/register/{id}', [ExhibitionController::class, 'vendorRegisterExhibitionView'])->name('exhibition.vendor.register');
+Route::post('/exhibition/vendor/register', [ExhibitionController::class, 'vendorExhibitionRegisterStore'])->name('exhibition.vendor.register.store');
+Route::post('/checkout/payment', [ExhibitionController::class, 'createPaymentIntent'])->name('checkout.payment');
+Route::post('/checkout/payment-success', [ExhibitionController::class, 'handlePaymentSuccess'])->name('checkout.payment-success');
+
+//Exhibition preview Routes
 Route::get('/preview', function () {
     return view('exhibition.previews.preview');
 })->name('preview');
@@ -58,11 +66,21 @@ Route::get('/preview/layout3', function () {
     return view('exhibition.previews.layout3');
 })->name('preview.layout3');
 
-// Route::get('/shop', [ProductController::class, 'index'])->name('pages.shop');
-// Route::get('/products', [ProductController::class, 'index']);
+// Admin Routes
+Route::middleware('auth')->group(function () {
+    //Admin Routes
+    Route::get('/admin/users', [AdminController::class, 'showUsers'])->name('admin.users');
+    Route::post('/admin/create', [AdminController::class, 'createAdmin'])->name('admin.create');
 
-//Dashboard Routes
-Route::get('/dashboard', [PageController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
+    //Category Routes
+    Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
+    Route::get('/category/{id}', [CategoryController::class, 'show'])->name('category.show');
+    Route::put('/category/{id}', [CategoryController::class, 'update'])->name('category.update');
+    Route::delete('/category/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
+
+    Route::post('/admin/users/{user}/deactivate', [AdminController::class, 'deactivateUser'])->name('admin.users.deactivate');
+    Route::post('/admin/users/{user}/activate', [AdminController::class, 'activateUser'])->name('admin.users.activate');
+});
 
 // Vendor Routes
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -78,48 +96,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/vendor/products/edit/{id}', [ProductController::class, 'edit'])->name('vendor.products.edit');
         Route::post('/vendor/products/update/{id}', [ProductController::class, 'update'])->name('vendor.products.update');
         Route::delete('/vendor/products/delete/{id}', [ProductController::class, 'destroy'])->name('vendor.products.delete');
-        // Route::put('/orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
-        // Route::get('/orders/details/{order}', [OrderController::class, 'showVendorOrderDetails'])->name('show.vendor.orders.details');
 
+        //Order Routes
         Route::get('/orders/details/{order}', [OrderController::class, 'showVendorOrderDetails'])->name('show.vendor.orders.details');
         Route::put('/orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
         Route::post('/orders/{order}/courier', [OrderController::class, 'saveCourierDetails'])->name('orders.saveCourierDetails');
+        Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');
+
         //Exhibition Routes
-        // Route::get('/exhibitions/form', [ExhibitionController::class, 'create'])->name('exhibition.create');
-        // Route::post('/exhibitions', [ExhibitionController::class, 'store'])->name('exhibitions.store');
+        Route::get('/exhibitions/form', [ExhibitionController::class, 'create'])->name('exhibition.create');
+        Route::post('/exhibitions', [ExhibitionController::class, 'store'])->name('exhibitions.store');
+        Route::get('/vendor/exhibition/{id}/edit', [ExhibitionController::class, 'edit'])->name('exhibition.edit');
+        Route::post('/exhibitions/{id}/payment', [ExhibitionController::class, 'processPayment'])->name('exhibitions.processPayment');
     });
 });
 
-//Exhibition Routes
-Route::middleware(['auth'])->group(function () {
-    Route::get('/exhibitions/form', [ExhibitionController::class, 'create'])->name('exhibition.create');
-    Route::post('/exhibitions', [ExhibitionController::class, 'store'])->name('exhibitions.store');
-    Route::get('/vendor/exhibition/{id}/edit', [ExhibitionController::class, 'edit'])->name('exhibition.edit');
-    Route::post('/exhibitions/{id}/payment', [ExhibitionController::class, 'processPayment'])->name('exhibitions.processPayment');
-
-    // redirect to the correct layout
-    Route::get('/preview', [ExhibitionController::class, 'preview'])->name('preview');
-    Route::post('/preview', [ExhibitionController::class, 'preview'])->name('preview.post');
-});
-Route::get('/exhibition/{id}', [ExhibitionController::class, 'exhibitionShow'])->name('exhibition.show');
-Route::get('/exhibition/vendor/register/{id}', [ExhibitionController::class, 'vendorRegisterExhibitionView'])->name('exhibition.vendor.register');
-Route::post('/exhibition/vendor/register', [ExhibitionController::class, 'vendorExhibitionRegisterStore'])->name('exhibition.vendor.register.store');
-Route::post('/checkout/payment', [ExhibitionController::class, 'createPaymentIntent'])->name('checkout.payment');
-Route::post('/checkout/payment-success', [ExhibitionController::class, 'handlePaymentSuccess'])->name('checkout.payment-success');
-
-// Admin Routes
-Route::middleware('auth')->group(function () {
-    Route::get('/admin/users', [AdminController::class, 'showUsers'])->name('admin.users');
-    Route::post('/admin/create', [AdminController::class, 'createAdmin'])->name('admin.create');
-
-    //Category Routes
-    Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
-    Route::get('/category/{id}', [CategoryController::class, 'show'])->name('category.show');
-    Route::put('/category/{id}', [CategoryController::class, 'update'])->name('category.update');
-    Route::delete('/category/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
-
-    Route::post('/admin/users/{user}/deactivate', [AdminController::class, 'deactivateUser'])->name('admin.users.deactivate');
-    Route::post('/admin/users/{user}/activate', [AdminController::class, 'activateUser'])->name('admin.users.activate');
+// Customer Routes
+Route::middleware(['auth', 'verified'])->group(function () {
+    //User Routes
+    Route::delete('/orders/{order}', [OrderController::class, 'deleteOrder'])->name('orders.delete');
 });
 
 //Product Routes

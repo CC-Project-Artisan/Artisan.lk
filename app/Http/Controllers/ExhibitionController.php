@@ -355,6 +355,7 @@ class ExhibitionController extends Controller
         Stripe::setApiKey(config('services.stripe.secret'));
     }
 
+    // Create a PaymentIntent
     public function createPaymentIntent(Request $request)
     {
         // Validate total price
@@ -388,6 +389,8 @@ class ExhibitionController extends Controller
         //     ], 500);
         // }
     }
+
+    // Handle payment success
     public function handlePaymentSuccess(Request $request)
     {
         try {
