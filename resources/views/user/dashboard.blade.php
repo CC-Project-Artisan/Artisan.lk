@@ -90,7 +90,7 @@
         <!-- Main Content -->
         <div class="u-dashboard-content-wrapper">
             <!-- Dashboard page -->
-            <div id="dashboard" class="ud-page-wrapper hidden">
+            <div id=" myOrders" class="ud-page-wrapper hidden">
                 <div class="ud-dashboard-page bg-white p-6 rounded shadow">
                     <div class="flex">
                         <div class="ud-profile-image-wrapper">
@@ -148,11 +148,12 @@
             </div>
 
             <!-- orders -->
-            <div id="myOrders" class="ud-page-wrapper ">
+            <div id="dashboard" class="ud-page-wrapper ">
+                @livewire('user.order-tab')
                 @forelse ($orders as $order)
                 @foreach ($order->orderItems as $orderItem)
                 <div class="mb-4">
-                    <x-user.user-order :order="$order" :orderItem="$orderItem" :product="$orderItem->product" />
+                    {{-- <x-user.user-order :order="$order" :orderItem="$orderItem" :product="$orderItem->product" /> --}}
                 </div>
                 @endforeach
                 @empty
