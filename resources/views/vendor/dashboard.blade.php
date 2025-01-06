@@ -111,7 +111,7 @@
         <!-- Main Content -->
         <div class="u-dashboard-content-wrapper">
             <!-- Dashboard page -->
-            <div id="dashboard" class="ud-page-wrapper">
+            <div id="dashboard" class="ud-page-wrapper hidden">
                 <div class="p-6 bg-white rounded shadow ud-dashboard-page">
                     <div class="flex">
                         <div class="ud-profile-image-wrapper">
@@ -199,7 +199,7 @@
             </div>
 
             <!-- orders -->
-            <div id="myOrders" class="ud-page-wrapper hidden">
+            <div id="myOrders" class="ud-page-wrapper ">
                 <x-compo.search
                     :text="'Orders'"
                     :options="[

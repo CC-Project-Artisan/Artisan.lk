@@ -11,13 +11,9 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\WebhookController;
 use App\Http\Controllers\OrderController;
-use App\Livewire\Vendor\EditExhibition;
-use App\Livewire\Exhibition\VendorRegistrationForm;
-
 use App\Http\Controllers\ExhibitionController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+
 
 //Profile Routes
 Route::middleware('auth')->group(function () {
@@ -102,14 +98,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
         Route::post('/orders/{order}/courier', [OrderController::class, 'saveCourierDetails'])->name('orders.saveCourierDetails');
         Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');
+        
 
-        //Exhibition Routes
-        Route::get('/exhibitions/form', [ExhibitionController::class, 'create'])->name('exhibition.create');
-        Route::post('/exhibitions', [ExhibitionController::class, 'store'])->name('exhibitions.store');
-        Route::get('/vendor/exhibition/{id}/edit', [ExhibitionController::class, 'edit'])->name('exhibition.edit');
-        Route::post('/exhibitions/{id}/payment', [ExhibitionController::class, 'processPayment'])->name('exhibitions.processPayment');
     });
 });
+//Exhibition Routes
+Route::get('/exhibitions/form', [ExhibitionController::class, 'create'])->name('exhibition.create');
+Route::post('/exhibitions', [ExhibitionController::class, 'store'])->name('exhibitions.store');
+Route::get('/vendor/exhibition/{id}/edit', [ExhibitionController::class, 'edit'])->name('exhibition.edit');
+Route::post('/exhibitions/{id}/payment', [ExhibitionController::class, 'processPayment'])->name('exhibitions.processPayment');
 
 // Customer Routes
 Route::middleware(['auth', 'verified'])->group(function () {

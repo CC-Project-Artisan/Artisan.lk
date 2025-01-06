@@ -90,7 +90,7 @@
         <!-- Main Content -->
         <div class="u-dashboard-content-wrapper">
             <!-- Dashboard page -->
-            <div id="myOrders" class="ud-page-wrapper hidden">
+            <div id="dashboard" class="ud-page-wrapper hidden">
                 <div class="ud-dashboard-page bg-white p-6 rounded shadow">
                     <div class="flex">
                         <div class="ud-profile-image-wrapper">
@@ -148,7 +148,7 @@
             </div>
 
             <!-- orders -->
-            <div id="dashboard" class="ud-page-wrapper ">
+            <div id="myOrders" class="ud-page-wrapper ">
                 @forelse ($orders as $order)
                 @foreach ($order->orderItems as $orderItem)
                 <div class="mb-4">
@@ -209,19 +209,19 @@
                             @method('put')
 
                             <div>
-                                <x-input-label for="update_password_current_password" :value="__('Current Password')" class="star"/>
+                                <x-input-label for="update_password_current_password" :value="__('Current Password')" class="star" />
                                 <x-text-input id="update_password_current_password" name="current_password" type="password" class="mt-1 block w-full" autocomplete="current-password" />
                                 <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
                             </div>
 
                             <div>
-                                <x-input-label for="update_password_password" :value="__('New Password')" class="star"/>
+                                <x-input-label for="update_password_password" :value="__('New Password')" class="star" />
                                 <x-text-input id="update_password_password" name="password" type="password" class="mt-1 block w-full" autocomplete="new-password" />
                                 <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
                             </div>
 
                             <div>
-                                <x-input-label for="update_password_password_confirmation" :value="__('Confirm Password')" class="star"/>
+                                <x-input-label for="update_password_password_confirmation" :value="__('Confirm Password')" class="star" />
                                 <x-text-input id="update_password_password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="new-password" />
                                 <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
                             </div>

@@ -69,7 +69,6 @@ class PageController extends Controller
             $vendors = Vendor::all();
             $users = User::all();
 
-            $totalUsers = User::where('role', '!=', 'admin')->count();
             $totalVendors = Vendor::count();
 
             $categories = Category::all();
@@ -154,6 +153,10 @@ class PageController extends Controller
                         )
                     );
                 case 'admin':
+                    $totalUsers = User::where('role', '!=', 'admin')->count();
+                    $totalProducts = Product::count();
+                    $totalExhibitions = Exhibition::count();
+                    $pendingExhibitions = Exhibition::where('status', 'pending')->count();
                     return view(
                         'admin.dashboard',
                         compact(
@@ -168,6 +171,9 @@ class PageController extends Controller
                             'products',
                             'orders',
                             'orderItems',
+                            'totalProducts',
+                            'totalExhibitions',
+                            'pendingExhibitions'
                         )
                     );
                 default:

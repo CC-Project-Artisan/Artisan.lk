@@ -5,7 +5,6 @@ namespace App\Notifications\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 use App\Models\Order;
 
@@ -15,43 +14,49 @@ class OrderPlaced extends Notification
 
     protected $order;
 
+    /**
+     * Create a new notification instance.
+     */
     public function __construct(Order $order)
     {
         $this->order = $order;
     }
 
-    public function via($notifiable)
+    /**
+     * Get the notification's delivery channels.
+     *
+     * @return array<int, string>
+     */
+    public function via(object $notifiable): array
     {
-        return ['database', 'mail', 'broadcast'];
+        return ['database'];
     }
 
-    public function toMail($notifiable)
+    /**
+     * Get the mail representation of the notification.
+     */
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('You have received a new order!')
-            ->line('Order ID: #' . $this->order->id)
-            ->action('View Order', url('/vendor/orders/' . $this->order->id))
-            ->line('Thank you for using our application!');
+                    ->line('The introduction to the notification.')
+                    ->action('Notification Action', url('/'))
+                    ->line('Thank you for using our application!');
     }
 
-    public function toArray($notifiable)
+    /**
+     * Get the array representation of the notification.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(object $notifiable): array
     {
         return [
+            'type' => 'order',
             'order_id' => $this->order->id,
-            'message' => 'New order received',
-            'details' => [
-                'order_amount' => $this->order->total,
-                'customer_name' => $this->order->first_name . ' ' . $this->order->last_name,
-                // 'view_url' => url('/vendor/orders/' . $this->order->id)
-            ]
+            'message' => "New order received for your product",
+            'amount' => $this->order->total,
+            'customer_name' => $this->order->first_name . ' ' . $this->order->last_name,
+            'created_at' => now()
         ];
-    }
-
-    public function toBroadcast($notifiable)
-    {
-        return new BroadcastMessage([
-            'order_id' => $this->order->id,
-            'message' => 'New order received'
-        ]);
     }
 }

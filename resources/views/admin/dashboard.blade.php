@@ -124,7 +124,7 @@
                                     <p class="summery-title">Total Exhibitions</p>
                                 </div>
                                 <div class="flex justify-center items-center h-full">
-                                    <p class="summary-amount">100</p>
+                                    <p class="summary-amount">{{ $totalExhibitions }}</p>
                                 </div>
                                 <div class="summery-icon">
                                     <i class="fa-solid fa-signal"></i>
@@ -137,7 +137,7 @@
                                     <p class="summery-title">Pending Exhibitions</p>
                                 </div>
                                 <div class="flex justify-center items-center h-full">
-                                    <p class="summary-amount">100</p>
+                                    <p class="summary-amount">{{ $pendingExhibitions }}</p>
                                 </div>
                                 <div class="summery-icon">
                                     <i class="fa-solid fa-hourglass-half"></i>
@@ -150,7 +150,7 @@
                                     <p class="summery-title">Total Listings</p>
                                 </div>
                                 <div class="flex justify-center items-center h-full">
-                                    <p class="summary-amount">100</p>
+                                    <p class="summary-amount">{{ $totalProducts }}</p>
                                 </div>
                                 <div class="summery-icon">
                                     <i class="fa-solid fa-clipboard-check"></i>
