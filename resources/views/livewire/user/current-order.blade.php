@@ -52,13 +52,13 @@
                 <x-compo.shipping-progess-bar :order="$order" />
                 <div class="mt-4 p-4 bg-gray-50 rounded-lg w-full max-w-2xl">
                     <h2 class="text-lg text-center font-semibold mb-3">Courier Details</h2>
-                    @if($order->courierDetails)
+                    @if($courierDetails)
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         @if ($order->order_status === 'shipped' || $order->order_status === 'delivered')
-                        <p class="mb-2"><span>Tracking ID:</span> {{ $order->courierDetails->tracking_number ?? 'Not available' }}</p>
-                        <p class="mb-2"><span>Shipping Company:</span> {{ $order->courierDetails->courier_name ?? 'Not available' }}</p>
-                        <p class="mb-2"><span>Contact Number:</span> {{ $order->courierDetails->courier_contact_number ?? 'Not available' }}</p>
-                        <p class="mb-2"><span>Delivery Date:</span> {{ \Carbon\Carbon::parse($order->courierDetails->delivery_date ? date('Y-m-d', strtotime($order->courierDetails->delivery_date)) : 'Not available')->format('d M Y') }}</p>
+                        <p class="mb-2"><span>Tracking ID:</span> {{ $courierDetails->tracking_number ?? 'Not available' }}</p>
+                        <p class="mb-2"><span>Shipping Company:</span> {{ $courierDetails->courier_name ?? 'Not available' }}</p>
+                        <p class="mb-2"><span>Contact Number:</span> {{ $courierDetails->courier_contact_number ?? 'Not available' }}</p>
+                        <p class="mb-2"><span>Delivery Date:</span> {{ \Carbon\Carbon::parse($courierDetails->delivery_date ? date('Y-m-d', strtotime($courierDetails->delivery_date)) : 'Not available')->format('d M Y') }}</p>
                         @endif
                     </div>
                     @else

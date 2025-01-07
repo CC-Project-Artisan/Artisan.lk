@@ -15,20 +15,20 @@ class OrderTab extends Component
         $this->activeTab = $tab;
     }
 
-        public function render()
+    public function render()
     {
         $user = Auth::user();
         
         $currentOrders = Order::with(['orderItems.product'])
             ->where('user_id', $user->id)
-            ->whereIn('order_status', ['pending', 'processing', 'shipped'])
+            ->whereIn('order_status', ['pending', 'accepted', 'processing', 'shipped'])
             ->get();
-    
+
         $pastOrders = Order::with(['orderItems.product'])
             ->where('user_id', $user->id)
-            ->where('order_status', 'delivered')
+            ->whereIn('order_status', ['delivered', 'rejected'])
             ->get();
-    
+
         return view('livewire.user.order-tab', [
             'currentOrders' => $currentOrders,
             'pastOrders' => $pastOrders
