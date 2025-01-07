@@ -90,7 +90,7 @@
         <!-- Main Content -->
         <div class="u-dashboard-content-wrapper">
             <!-- Dashboard page -->
-            <div id=" myOrders" class="ud-page-wrapper hidden">
+            <div id="dashboard" class="ud-page-wrapper hidden">
                 <div class="ud-dashboard-page bg-white p-6 rounded shadow">
                     <div class="flex">
                         <div class="ud-profile-image-wrapper">
@@ -128,7 +128,7 @@
             <!-- messages -->
             <div id="myMessages" class="p-6 bg-white rounded shadow ud-page-wrapper hidden">
                 <h2 class="text-2xl font-bold text-blue-900">My messages</h2>
-                <p class="mt-2">Your messages.</p>
+                @livewire('vendor-chat')
             </div>
 
             <!-- notificatios -->
@@ -148,22 +148,8 @@
             </div>
 
             <!-- orders -->
-            <div id="dashboard" class="ud-page-wrapper ">
+            <div id="myOrders" class="ud-page-wrapper ">
                 @livewire('user.order-tab')
-                @forelse ($orders as $order)
-                @foreach ($order->orderItems as $orderItem)
-                <div class="mb-4">
-                    {{-- <x-user.user-order :order="$order" :orderItem="$orderItem" :product="$orderItem->product" /> --}}
-                </div>
-                @endforeach
-                @empty
-                <div class="ud-empty-body">
-                    <i class="fa-solid fa-magnifying-glass text-[#6C757D] text-[80px]"></i>
-                    <h2 class="text-[#6C757D] text-[40px] font-bold">No orders found</h2>
-                    <span class="text-[#6C757D]">We couldn't find any records. Try changing search filters</span>
-                    <a href="{{ route('pages.shop') }}" class="ud-btn">Buy Products</a>
-                </div>
-                @endforelse
             </div>
 
             <!-- My presonal details -->

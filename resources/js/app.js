@@ -15,6 +15,7 @@ import '../css/component.css'
 import '../css/search.css'
 import '../css/preview.css'
 import '../css/exhibition.css'
+import '../css/chat.css'
 
 
 import Alpine from 'alpinejs';

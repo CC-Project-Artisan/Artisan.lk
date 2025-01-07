@@ -69,13 +69,13 @@
             <div class="savedAd-buttons">
                 <div class="border-r border-customGray">
                     @foreach($order->orderItems as $item)
+                    @endforeach
                     <a href="{{ route('product.show', $item->product_id) }}" class="inline-block px-4 py-2 text-customBrown">
                         <button class="flex items-center">
                             <i class="fa-regular fa-eye mr-2"></i>
                             View Product
                         </button>
                     </a>
-                    @endforeach
                 </div>
                 @if ($order->order_status === 'pending')
                 <form action="{{ route('orders.delete', $order->id) }}" method="POST" class="remove-button savedAd-delete border-l">

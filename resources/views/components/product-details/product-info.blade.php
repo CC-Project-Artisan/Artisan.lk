@@ -7,7 +7,7 @@
             ADDITIONAL INFORMATION
         </button>
         <button class="tab-button" data-tab="vendor-profile" onclick="showTab('vendor-profile')">
-            VENDOR PROFILE
+            VENDOR CHAT
         </button>
         <button class="tab-button" data-tab="reviews" onclick="showTab('reviews')">
             REVIEWS (1)
@@ -16,19 +16,21 @@
 
     <div id="description" class="product-tab-content">
         <p>
-        {{ $product->productDescription }}
+            {{ $product->productDescription }}
         </p>
     </div>
     <div id="additional" class="hidden product-tab-content">
         <p>
-            <h1> Dimenstions </h1>
-            {{ $product->dimensions }}
+        <h1> Dimenstions </h1>
+        {{ $product->dimensions }}
         </p>
     </div>
     <div id="vendor-profile" class="hidden product-tab-content">
-        <p>
-            Vendor profile content goes here.
-        </p>
+        @auth
+            @if ($product->user_id && $product->user_id != auth()->id())
+                @livewire('chat', ['receiverId' => $product->user_id])
+            @endif
+        @endauth
     </div>
     <div id="reviews" class="hidden product-tab-content">
         <p>
@@ -49,41 +51,3 @@
         document.getElementById(tab).classList.remove('hidden');
     }
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

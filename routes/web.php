@@ -99,7 +99,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/orders/{order}/courier', [OrderController::class, 'saveCourierDetails'])->name('orders.saveCourierDetails');
         Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');
         
-
+        //Chat Routes
+        Route::get('/vendor/messages', [VendorController::class, 'messages'])->name('vendor.messages');
     });
 });
 //Exhibition Routes

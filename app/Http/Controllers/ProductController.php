@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 
@@ -29,7 +30,9 @@ class ProductController extends Controller
     {
         // Fetch the product by ID with its category
         $product = Product::with('category')->findOrFail($id);
-        return view('pages.product-display', compact('product'));
+        $vendorId = $product->user_id;
+        $vendor = User::find($vendorId);
+        return view('pages.product-display', compact('product', 'vendor'));
     }
 
     // Store a new product listing
