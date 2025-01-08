@@ -7,8 +7,8 @@ use Livewire\Component;
 
 class GoogleMap extends Component 
 {
-    public $apiKey;
-    public $vendors; 
+    public $apiKey; // API Key for Google Maps
+    public $vendors; // Vendors data
 
     public function mount() 
     {
@@ -23,8 +23,8 @@ class GoogleMap extends Component
                 return [
                     'business_name' => $vendor->business_name,
                     'business_address' => $vendor->business_address,
-                    'latitude' => $vendor->latitude,
-                    'longitude' => $vendor->longitude,
+                    'latitude' => (float) $vendor->latitude,
+                    'longitude' => (float) $vendor->longitude,
                 ];
             })
             ->toArray();
@@ -32,6 +32,9 @@ class GoogleMap extends Component
 
     public function render()
     {
+        // Debugging Vendors (Optional)
+        // Log::info($this->vendors);
+
         return view('livewire.google-map', [
             'apiKey' => $this->apiKey,
             'vendors' => $this->vendors

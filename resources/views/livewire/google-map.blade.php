@@ -6,8 +6,13 @@
 
     // Google Maps initialization function
     function initMap() {
-        const vendors = @json($vendors); // Get vendors from Livewire
-        const center = { lat: 7.8731, lng: 80.7718 }; // Sri Lanka center
+        // Get vendors passed from Livewire as JSON
+        const vendors = @json($vendors);
+
+        // Log vendors to console for debugging
+        console.log(vendors);
+
+        const center = { lat: 7.8731, lng: 80.7718 }; // Center the map in Sri Lanka
 
         // Initialize the map
         map = new google.maps.Map(document.getElementById('map'), {
@@ -15,17 +20,31 @@
             zoom: 8,
         });
 
+        // Check if there are any vendors to display
+        if (vendors.length === 0) {
+            console.warn("No vendors found to display on the map.");
+        }
+
         // Add markers for each vendor
         vendors.forEach((vendor) => {
+            // Validate latitude and longitude
+            if (!vendor.latitude || !vendor.longitude) {
+                console.warn(`Invalid coordinates for vendor: ${vendor.business_name}`);
+                return;
+            }
+
             const marker = new google.maps.Marker({
-                position: { lat: vendor.latitude, lng: vendor.longitude },
+                position: { lat: parseFloat(vendor.latitude), lng: parseFloat(vendor.longitude) },
                 map: map,
                 title: vendor.business_name,
             });
 
             // Add info window for the marker
             const infoWindow = new google.maps.InfoWindow({
-                content: `<div><h3>${vendor.business_name}</h3><p>${vendor.business_address}</p></div>`,
+                content: `<div>
+                            <h3>${vendor.business_name}</h3>
+                            <p>${vendor.business_address}</p>
+                          </div>`,
             });
 
             // Show info window on marker click
