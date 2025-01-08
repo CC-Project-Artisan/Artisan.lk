@@ -1,5 +1,6 @@
 <?php
 
+use Livewire\Livewire;
 use App\Http\Controllers\User\AdminController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
@@ -13,6 +14,14 @@ use App\Http\Controllers\WebhookController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ExhibitionController;
 use Illuminate\Support\Facades\Route;
+//php use App\Http\Livewire\GoogleMap;
+
+
+// Route::get('/map', action: \App\Http\Livewire\GoogleMap::class)->name('pages.map');
+
+
+
+Route::get('/map', [PageController::class, 'map'])->name('pages.map');
 
 
 //Profile Routes
@@ -29,7 +38,7 @@ Route::get('/dashboard', [PageController::class, 'dashboard'])->middleware(['aut
 Route::get('/', [PageController::class, 'index'])->name('welcome');
 Route::get('/shop', [PageController::class, 'shop'])->name('pages.shop');
 Route::get('/exhibition', [PageController::class, 'exhibition'])->name('pages.exhibition');
-Route::get('/about', [PageController::class, 'about'])->name('pages.about');
+Route::get('/about', [PageController::class, 'about'])->name(name: 'pages.about');
 Route::get('/product-display', [PageController::class, 'productView'])->name('pages.product-overview');
 Route::get('/cart', [PageController::class, 'cartview'])->name('pages.cart');
 Route::get('/checkout', [PageController::class, 'checkoutview'])->name('pages.checkout');

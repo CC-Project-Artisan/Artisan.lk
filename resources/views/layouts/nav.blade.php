@@ -11,7 +11,7 @@
         <ul>
             <li><a href="{{ route('welcome') }}">Home</a></li>
             <li><a href="{{ route('pages.shop') }}">Shop</a></li>
-            <li><a href="#">Map</a></li>
+            <li><a href="{{ route('pages.map') }}">Map</a></li>
             <li><a href="{{ route('pages.exhibition') }}">Exhibitions</a></li>
             <li><a href="{{ route('pages.about') }}">About</a></li>
         </ul>
