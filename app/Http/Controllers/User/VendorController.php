@@ -115,4 +115,32 @@ class VendorController extends Controller
 
         return redirect()->route('dashboard')->with('error', 'Vendor profile not found.');
     }
+
+    public function mapPage(Request $request)
+    {
+        // Start with the base query
+        $query = Vendor::query();
+
+        // Apply filters based on search inputs
+        if ($request->keyword) {
+            $query->where('business_name', 'like', '%' . $request->keyword . '%');
+        }
+
+        if ($request->location) {
+            $query->where('business_address', 'like', '%' . $request->location . '%');
+        }
+
+        if ($request->category && $request->category !== '') {
+            $query->where('business_category', $request->category);
+        }
+
+        // Ensure valid latitude and longitude
+        $vendors = $query->whereNotNull('latitude')->whereNotNull('longitude')->get();
+
+        // Pass data to the map view
+        return view('pages.map', [
+            'vendors' => $vendors,
+            'apiKey' => config('services.googleMap.apiKey'),
+        ]);
+    }
 }

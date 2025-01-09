@@ -17,7 +17,7 @@
         // Initialize the map
         map = new google.maps.Map(document.getElementById('map'), {
             center: center,
-            zoom: 8,
+            zoom: 9,
         });
 
         // Check if there are any vendors to display

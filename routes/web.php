@@ -22,6 +22,8 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/map', [PageController::class, 'map'])->name('pages.map');
+Route::get('/map', [VendorController::class, 'mapPage'])->name('pages.map');
+
 
 
 //Profile Routes
