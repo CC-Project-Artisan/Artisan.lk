@@ -18,29 +18,14 @@
 <body>
     @include('layouts.nav')
 
-    <!-- <div id="search-modal" class="search-modal">
-        <div class="search-modal-content">
+    <div id="searchModal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-75">
+        <div class="w-3/4 p-4 overflow-y-auto text-white bg-gray-900 rounded-lg h-3/4">
             
-            <a href="#" class="close">&times;</a>
-
-            
-            <form action="{{ route('search') }}" method="GET" class="search-bar" id="search-form">
-                <select name="category" id="category-select">
-                    <option value="all">All Categories</option>
-                    @foreach ($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                    @endforeach
-                </select>
-                <input type="text" name="query" placeholder="Search..." id="search-input" required>
-                <button type="submit" class="search-btn">Search</button>
-            </form>
-
-            
-            <div id="search-results">
-                <p>Type a letter to search for products</p>
+            <div class="mt-4">
+                @livewire('product-search')
             </div>
         </div>
-    </div> -->
+    </div>
 
     <!-- Page Contents -->
     <div class="page-content pt-[87px]">
@@ -49,6 +34,22 @@
     </div>
 
     @include('layouts.footer')
+
+<script>
+    function toggleSearchModal() {
+        const modal = document.getElementById('searchModal');
+        if (modal) {
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden'); // Show modal
+                Livewire.emit('resetSearch'); // Emit resetSearch event
+            } else {
+                modal.classList.add('hidden'); // Hide modal
+            }
+        }
+    }
+
+</script>
+
 </body>
 
 </html>
