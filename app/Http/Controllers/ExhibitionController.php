@@ -9,15 +9,24 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Stripe\Stripe;
+use Stripe\PaymentIntent;
+use Carbon\Carbon;
+use function public_path;
+use App\Models\ExhibitionStall;
+use App\Models\VendorExhibitionRegistration;
 
 class ExhibitionController extends Controller
 {
+
+    // direct to the exhibition form
     public function create(Request $request)
     {
         $layout = $request->input('layout', 'layout1');
         return view('exhibition.exhibition-form', compact('layout'));
     }
 
+    // create exhibition
     public function store(Request $request)
     {
         $messages = [
@@ -67,6 +76,32 @@ class ExhibitionController extends Controller
             'contact_name3' => 'nullable|string|max:255',
             'contact_telephone3' => 'nullable|string|max:255',
             'email3' => 'nullable|email',
+
+            'stall-count' => 'nullable|integer|min:1|max:3',
+            'stall_name_1' => 'required|string|max:255',
+            'stall_size_1' => 'required|string|max:255',
+            'stall_size_price_1' => 'required|integer',
+
+            'stall-type-count' => 'nullable|integer|min:1|max:3',
+            'stall_type_1' => 'required|string|max:255',
+            'stall_type_price_1' => 'required|integer',
+            'stall_type_requirements_1' => 'required|string|max:255',
+
+            'stall_name_2' => 'nullable|string|max:255',
+            'stall_size_2' => 'nullable|string|max:255',
+            'stall_size_price_2' => 'nullable|integer',
+
+            'stall_type_2' => 'nullable|string|max:255',
+            'stall_type_price_2' => 'nullable|integer',
+            'stall_type_requirements_2' => 'nullable|string|max:255',
+
+            'stall_name_3' => 'nullable|string|max:255',
+            'stall_size_3' => 'nullable|string|max:255',
+            'stall_size_price_3' => 'nullable|integer',
+
+            'stall_type_3' => 'nullable|string|max:255',
+            'stall_type_price_3' => 'nullable|integer',
+            'stall_type_requirements_3' => 'nullable|string|max:255',
 
             'layout' => 'nullable|string|in:layout1,layout2,layout3',
             'social-media-checkboxes' => 'nullable|array',
@@ -157,11 +192,26 @@ class ExhibitionController extends Controller
                 }
             }
 
+            // Save stall sizes and types
+            $stallCount = $request->input('stall-count', 0);
+            for ($i = 1; $i <= $stallCount; $i++) {
+                if ($request->filled("stall_name_$i") && $request->filled("stall_size_$i") && $request->filled("stall_size_price_$i") && $request->filled("stall_type_$i") && $request->filled("stall_type_price_$i") && $request->filled("stall_type_requirements_$i")) {
+                    ExhibitionStall::create([
+                        'exhibition_id' => $exhibition->id,
+                        'name' => $request->input("stall_name_$i"),
+                        'size' => $request->input("stall_size_$i"),
+                        'price' => $request->input("stall_size_price_$i"),
+                        'type' => $request->input("stall_type_$i"),
+                        'type_price' => $request->input("stall_type_price_$i"),
+                        'requirements' => $request->input("stall_type_requirements_$i"),
+                    ]);
+                }
+            }
+
             return response()->json([
                 'success' => true,
                 'message' => 'Exhibition created successfully!'
             ]);
-
         } catch (\Exception $e) {
             Log::error('Exhibition creation failed: ' . $e->getMessage());
 
@@ -169,6 +219,189 @@ class ExhibitionController extends Controller
                 'success' => false,
                 'message' => 'There was an error submitting your application.'
             ], 500); // Internal Server Error
+        }
+    }
+
+    // Edit exhibition
+    public function edit($id)
+    {
+        $exhibition = Exhibition::findOrFail($id);
+        return view('livewire.vendor.edit-exhibition', compact('exhibition'));
+    }
+
+    public function processPayment(Request $request, $id)
+    {
+        $exhibition = Exhibition::findOrFail($id);
+        $amount = $request->input('amount');
+
+        // Process the payment here (e.g., using a payment gateway)
+        $paymentMethodId = $request->input('payment_method_id');
+
+        // Assuming payment is successful
+        // Update the status to 'paid'
+        $exhibition->status = 'paid';
+        $exhibition->status_updated_at = Carbon::now();
+        $exhibition->save();
+
+        return redirect()->back()->with('success', 'Payment completed successfully.');
+    }
+
+    // Show exhibition
+    public function exhibitionShow($id)
+    {
+        $exhibition = Exhibition::findOrFail($id);
+        $layout = $exhibition->layout;
+
+        switch ($layout) {
+            case 'layout1':
+                return view('exhibition.previews.layout1', compact('exhibition'));
+            case 'layout2':
+                return view('exhibition.previews.layout2', compact('exhibition'));
+            case 'layout3':
+                return view('exhibition.previews.layout3', compact('exhibition'));
+            default:
+                return view('exhibition.exhibition-view', compact('exhibition'));
+        }
+    }
+
+    //Pass data into the preview pages
+    public function preview(Request $request)
+    {
+        // Handle preview for form submission
+        if ($request->isMethod('post')) {
+            $exhibition = (object) $request->all();
+        }
+        // Handle preview for existing exhibition
+        else if ($request->has('id')) {
+            $exhibition = Exhibition::findOrFail($request->id);
+        }
+        // Handle preview without data
+        else {
+            $exhibition = (object) [
+                'layout' => $request->input('layout', 'layout1'),
+                'exhibition_name' => 'Preview Exhibition',
+                // Add other default values as needed
+            ];
+        }
+
+        return view('exhibition.previews.preview', compact('exhibition'));
+    }
+
+    // Redirect to the vendor registration form
+    public function vendorRegisterExhibitionView($id)
+    {
+        $exhibition = Exhibition::findOrFail($id);
+        $stalls = ExhibitionStall::where('exhibition_id', $id)->get();
+        return view('exhibition.vendor-exhibition-registration-layout', compact('exhibition', 'stalls'));
+    }
+
+    public function vendorExhibitionRegisterStore(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'exhibitor_name' => 'required|string|max:255',
+                'exhibitor_email' => 'required|email|max:255',
+                'exhibitor_phone' => 'required|string|max:255',
+                'exhibition_address' => 'required|string|max:255',
+                'business_name' => 'required|string|max:255',
+                'business_category' => 'required|string|max:255',
+                'business_email' => 'required|email|max:255',
+                'business_phone' => 'required|string|max:255',
+                'stall' => 'required|exists:exhibition_stalls,id',
+                'stall_type' => 'required|string',
+                'requirements' => 'nullable|string',
+            ]);
+
+            $stall = ExhibitionStall::findOrFail($request->stall);
+            $exhibition = Exhibition::findOrFail($stall->exhibition_id);
+
+            // Calculate the total price
+            $totalPrice = 0;
+
+            // Add any additional fees if necessary
+            if (isset($exhibition->vendor_entrance_fee)) {
+                $totalPrice += $exhibition->vendor_entrance_fee + $stall->type_price + $stall->price;
+            } else {
+                $totalPrice = $stall->type_price + $stall->price;
+            }
+
+            $registration = VendorExhibitionRegistration::create([
+                'stall_id' => $validated['stall'],
+                'stall_type' => $validated['stall_type'],
+                'exhibitor_name' => $validated['exhibitor_name'],
+                'exhibitor_email' => $validated['exhibitor_email'],
+                'exhibitor_phone' => $validated['exhibitor_phone'],
+                'exhibition_address' => $validated['exhibition_address'],
+                'business_name' => $validated['business_name'],
+                'business_category' => $validated['business_category'],
+                'business_email' => $validated['business_email'],
+                'business_phone' => $validated['business_phone'],
+                'requirements' => $validated['requirements'],
+                'total_price' => $totalPrice,
+                'payment_status' => 'incomplete',
+            ]);
+
+            return redirect()->back()->with('success', 'Registration submitted successfully!');
+        } catch (\Exception $e) {
+            Log::error('Vendor Registration Error: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error submitting registration: ' . $e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function __construct()
+    {
+        Stripe::setApiKey(config('services.stripe.secret'));
+    }
+
+    // Create a PaymentIntent
+    public function createPaymentIntent(Request $request)
+    {
+        // Validate total price
+        $request->validate([
+            'total_price' => 'required|numeric|min:0.5', // Ensure minimum $0.50
+        ]);
+
+        // Convert total price to cents (Stripe uses smallest currency unit)
+        $amount = intval($request->total_price * 100);
+
+        return response()->json([
+            'success' => true,
+            'amount' => $amount,
+        ]);
+
+        // Create PaymentIntent
+        // try {
+        //     $paymentIntent = \Stripe\PaymentIntent::create([
+        //         'amount' => $amount,
+        //         'currency' => 'lkr',
+        //     ]);
+
+        //     return response()->json([
+        //         'success' => true,
+        //         'client_secret' => $paymentIntent->client_secret,
+        //     ]);
+        // } catch (\Exception $e) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => $e->getMessage(),
+        //     ], 500);
+        // }
+    }
+
+    // Handle payment success
+    public function handlePaymentSuccess(Request $request)
+    {
+        try {
+            $registrationId = $request->input('registration_id');
+            $registration = VendorExhibitionRegistration::findOrFail($registrationId);
+            $registration->update(['payment_status' => 'complete']);
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            Log::error('Payment Success Handling Error: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Error updating payment status: ' . $e->getMessage()], 500);
         }
     }
 }

@@ -12,10 +12,17 @@
 <div class="main-content">
     
     <main class="grid w-3/4 grid-cols-1 gap-0 pl-8 border-gray-300 sm:grid-cols-2 md:grid-cols-3">
-        @for ($i = 0; $i
-        < 10; $i++)
-            <x-product-list imageUrl="{{ asset('images/pottory.png.jpeg') }}" />
-        @endfor
+
+        @foreach($products as $product)
+            <x-product-list 
+                :productImage="json_decode($product->productImages, true)[0]"
+                :productName="$product->productName"
+                :productPrice="'Rs. ' . number_format($product->productPrice)"
+                :categoryName="$product->category->name "
+                :productId="$product->id"
+            />
+        @endforeach
+
     </main>
 
     <aside class="sidebar">

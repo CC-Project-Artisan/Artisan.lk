@@ -1,73 +1,149 @@
-<!-- 
-<h2>Layout 1 Preview</h2>
-<p><strong>Name:</strong> <span data-key="exhibition_name"></span></p>
-<p><strong>Description:</strong> <span data-key="exhibition_description"></span></p>
-<p><strong>Date:</strong> <span data-key="exhibition_date"></span></p>
-<p><strong>Location:</strong> <span data-key="exhibition_location"></span></p>
-<p><strong>Organization:</strong> <span data-key="organization_name"></span></p> -->
+@if (isset($exhibition))
 
+@extends('layouts.frontend')
+@section('pages')
 
+@endif
 
 <div class="container mx-auto px-4 py-8">
     <div class="flex flex-wrap bg-white shadow-lg rounded-lg overflow-hidden">
         <!-- Left Side - Image -->
         <div class="w-full md:w-2/5">
-            <img src="https://overatours.com/wp-content/uploads/2024/05/Artistic-tours-in-Sri-Lanka-1.jpg"
-                alt="Art Exhibition"
+            @if($exhibition->exhibitionBanner ?? '')
+            @php
+            $banners = json_decode($exhibition->exhibitionBanner, true);
+            $firstBanner = $banners[0] ?? null;
+            @endphp
+            @if($firstBanner)
+            <img src="{{ asset('images/' . $firstBanner) }}"
+                alt="{{ $exhibition->exhibition_name }}"
                 class="w-full h-full object-cover rounded-l-lg">
+            @else
+            <img src="https://overatours.com/wp-content/uploads/2024/05/Artistic-tours-in-Sri-Lanka-1.jpg"
+                alt="Default Exhibition Banner"
+                class="w-full h-full object-cover rounded-l-lg">
+            @endif
+            @else
+            <img src="https://overatours.com/wp-content/uploads/2024/05/Artistic-tours-in-Sri-Lanka-1.jpg"
+                alt="Default Exhibition Banner"
+                class="w-full h-full object-cover rounded-l-lg">
+            @endif
         </div>
 
         <!-- Right Side - Details -->
         <div class="w-full md:w-3/5 p-6 flex flex-col justify-between">
             <div>
-                <h1 class="text-3xl font-bold text-gray-800 mb-6"><span data-key="exhibition_name"></span></h1>
-                <div class="mb-6 space-y-3">
+                <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">
+                    <span data-key="exhibition_name">
+                        {{ $exhibition->exhibition_name ?? '' }}
+                    </span>
+                </h1>
+                <div class="mb-6 space-y-3 flex gap-3 justify-center">
                     <div class="flex items-center text-gray-700">
                         <i class="fas fa-calendar text-blue-600 mr-3"></i>
-                        <span data-key="exhibition_date"></span>
+                        <span data-key="exhibition_date">
+                            {{ \Carbon\Carbon::parse($exhibition->exhibition_date ?? '')->format('d M Y') }}
+                        </span>
                     </div>
-                    <div class="flex items-center text-gray-700">
+                    <div class="m-0 flex items-center text-gray-700">
                         <i class="fas fa-clock text-blue-600 mr-3"></i>
-                        <span data-key="start_time" id="start_time"></span> - <span data-key="end_time" id="end_time"></span>
+                        <span data-key="start_time" id="start_time">
+                            {{ \Carbon\Carbon::parse($exhibition->start_time ?? '')->format('h:i A') }}
+                        </span>
+                        <span class="mx-2">-</span>
+                        <span data-key="end_time" id="end_time">
+                            {{ \Carbon\Carbon::parse($exhibition->end_time ?? '')->format('h:i A') }}
+                        </span>
                     </div>
                 </div>
-                <p class="text-gray-600 leading-relaxed mb-8">
-                    <span data-key="exhibition_description"></span>
+                <p class="text-gray-600 leading-relaxed mb-8 text-center">
+                    <span data-key="exhibition_description">
+                        {{ $exhibition->exhibition_description ?? '' }}
+                    </span>
                 </p>
             </div>
 
             <!-- Location Card -->
-            <div class="mb-6 bg-gray-100 p-4 rounded-lg">
+            <div class=" bg-gray-100 p-4 rounded-lg">
                 <h2 class="text-xl font-semibold text-gray-800 mb-3">Exhibition Location</h2>
-                <div class="flex items-center text-gray-700">
+                <div class="flex items-center text-gray-700 pl-5">
                     <i class="fas fa-map-marker-alt text-blue-600 mr-3"></i>
-                    <span data-key="exhibition_location"></span>
+                    <span data-key="exhibition_location">
+                        {{ $exhibition->exhibition_location ?? '' }}
+                    </span>
                 </div>
             </div>
 
             <!-- Exhibitor Information -->
-            <div class="mb-6 bg-gray-100 p-4 rounded-lg">
+            <div class=" bg-gray-100 p-4 rounded-lg">
                 <h2 class="text-xl font-semibold text-gray-800 mb-3">Exhibitor Information</h2>
                 <ul class="list-disc pl-5 text-gray-600 space-y-2">
-                    <li><strong>Organization:</strong> <span data-key="organization_name"></span></li>
-                    <li><strong>Category:</strong> <span data-key="category_name"></span></li>
-                    <li><strong>Registration Period:</strong> <span data-key="registration_start_date"></span> - <span data-key="registration_end_date"></span></li>
-                    <li><strong>Maximum Exhibitors:</strong> <span data-key="max_exhibitors"></span></li>
+                    <li>
+                        <strong>Organization:</strong>
+                        <span data-key="organization_name">
+                            {{ $exhibition->organization_name ?? '' }}
+                        </span>
+                    </li>
+                    <li>
+                        <strong>Category:</strong>
+                        <span data-key="category_name">
+                            {{ $exhibition->category_name ?? '' }}
+                        </span>
+                    </li>
+                    <li>
+                        <strong>Registration Period:</strong>
+                        <span data-key="registration_start_date">
+                            {{ \Carbon\Carbon::parse($exhibition->registration_start_date ?? '')->format('d M Y') }}
+                        </span>
+                        <span class="mx-2">-</span>
+                        <span data-key="registration_end_date">
+                            {{ \Carbon\Carbon::parse($exhibition->registration_end_date ?? '')->format('d M Y') }}
+                        </span>
+                    </li>
+                    
+                    <li>
+                        <strong>Maximum Exhibitors:</strong>
+                        <span data-key="max_exhibitors">
+                            {{ $exhibition->max_exhibitors ?? '' }}
+                        </span>
+                    </li>
+
                 </ul>
             </div>
 
             <!-- Ticket Prices -->
-            <div class="mb-6 bg-gray-100 p-4 rounded-lg">
+            <div class=" bg-gray-100 p-4 rounded-lg">
                 <h2 class="text-xl font-semibold text-gray-800 mb-3">Ticket Prices</h2>
                 <ul class="list-disc pl-5 text-gray-600 space-y-2">
-                    <li><strong>Exhibitor Entrance Fee:</strong> Rs.<span data-key="vendor_entrance_fee"></span></li>
-                    <li><strong>Adult:</strong> Rs.<span data-key="regular_price"></span></li>
-                    <li><strong>Student:</strong> Rs.<span data-key="student_price"></span></li>
-                    <li><strong>Child:</strong> Rs.<span data-key="child_price"></span></li>
+                    <li>
+                        <strong>Exhibitor Entrance Fee:</strong>
+                        Rs.<span data-key="vendor_entrance_fee">
+                            {{ $exhibition->vendor_entrance_fee ?? '' }}/=
+                        </span>
+                    </li>
+                    <li>
+                        <strong>Adult:</strong>
+                        Rs.<span data-key="regular_price">
+                            {{ $exhibition->regular_price ?? '' }}/=
+                        </span>
+                    </li>
+                    <li>
+                        <strong>Student:</strong>
+                        Rs.<span data-key="student_price">
+                            {{ $exhibition->student_price ?? '' }}/=
+                        </span>
+                    </li>
+                    <li>
+                        <strong>Child:</strong>
+                        Rs.<span data-key="child_price">
+                            {{ $exhibition->child_price ?? '' }}/=
+                        </span>
+                    </li>
                 </ul>
             </div>
 
-            <div class="mb-6 bg-gray-100 p-4 rounded-lg">
+            <!-- Contact Information -->
+            <div class="bg-gray-100 p-4 rounded-lg">
                 <h2 class="text-xl font-semibold text-gray-800 mb-3">Connect With Us</h2>
                 <div class="contact-info">
                     <!-- Get contact count -->
@@ -82,19 +158,30 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- social media links -->
                 <div class="pl-5 text-gray-600">
-                    <a href="http://facebook.com" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook text-blue-600 mr-3"></i></a>
-                    <a href="http://instagram.com" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram text-blue-600 mr-3"></i></a>
-                    <a href="http://tiktok.com" target="_blank" rel="noopener noreferrer"><i class="fab fa-tiktok text-blue-600 mr-3"></i></a>
-                    <a href="http://youtube.com" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube text-blue-600 mr-3"></i></a>
+                    @if(isset($exhibition->social_media_links) ?? '')
+                    @foreach(json_decode($exhibition->social_media_links, true) as $platform => $url)
+                    <a href="{{ $url }}" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-{{ $platform }} text-blue-600 mr-3"></i>
+                    </a>
+                    @endforeach
+                    @endif
                 </div>
             </div>
 
             <!-- Buttons Section -->
             <div class="flex space-x-4 mt-6">
-                <a href="http://example.com/register" target="_blank" rel="noopener noreferrer" class="apply-button">
-                    Register as Vendor
-                </a>
+            @if(isset($exhibition->id))
+            <a href="{{ route('exhibition.vendor.register', ['id' => $exhibition->id]) }}" class="apply-button">
+                Register as Vendor
+            </a>
+            @else
+            <a href="#" class="apply-button disabled" aria-disabled="true">
+                Register as Vendor
+            </a>
+            @endif
                 <a href="http://example.com/book" target="_blank" rel="noopener noreferrer" class="apply-button">
                     Book Tickets
                 </a>
@@ -209,3 +296,7 @@
         margin-right: 0.5rem;
     }
 </style>
+
+@if (isset($exhibition))
+@endsection
+@endif

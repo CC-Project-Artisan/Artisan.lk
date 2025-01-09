@@ -98,7 +98,7 @@
         <!-- Main Content -->
         <div class="u-dashboard-content-wrapper">
             <!-- Dashboard page -->
-            <div id="dashboard" class="ud-page-wrapper hidden">
+            <div id="dashboard" class="ud-page-wrapper ">
                 <div class="ud-dashboard-page bg-white p-6 rounded shadow">
                     <div class="flex">
                         <div class="ud-profile-image-wrapper">
@@ -124,7 +124,7 @@
                                     <p class="summery-title">Total Exhibitions</p>
                                 </div>
                                 <div class="flex justify-center items-center h-full">
-                                    <p class="summary-amount">100</p>
+                                    <p class="summary-amount">{{ $totalExhibitions }}</p>
                                 </div>
                                 <div class="summery-icon">
                                     <i class="fa-solid fa-signal"></i>
@@ -137,7 +137,7 @@
                                     <p class="summery-title">Pending Exhibitions</p>
                                 </div>
                                 <div class="flex justify-center items-center h-full">
-                                    <p class="summary-amount">100</p>
+                                    <p class="summary-amount">{{ $pendingExhibitions }}</p>
                                 </div>
                                 <div class="summery-icon">
                                     <i class="fa-solid fa-hourglass-half"></i>
@@ -150,7 +150,7 @@
                                     <p class="summery-title">Total Listings</p>
                                 </div>
                                 <div class="flex justify-center items-center h-full">
-                                    <p class="summary-amount">100</p>
+                                    <p class="summary-amount">{{ $totalProducts }}</p>
                                 </div>
                                 <div class="summery-icon">
                                     <i class="fa-solid fa-clipboard-check"></i>
@@ -292,7 +292,7 @@
             </div>
 
             <!-- exhibitions -->
-            <div id="exhibitions" class="ud-page-wrapper ">
+            <div id="exhibitions" class="ud-page-wrapper hidden">
                 <x-compo.search
                     :text="'Status'"
                     :options="['all' => 'All', 'live' => 'Live', 'pending' => 'Pending', 'rejected' => 'Rejected', 'expired' => 'Expired']"

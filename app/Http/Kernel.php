@@ -5,9 +5,9 @@ namespace App\Http;
 use App\Http\Middleware\IsAdmin;
 // use App\Http\Middleware\TrustProxies;
 // use App\Http\Middleware\PreventRequestsDuringMaintenance;
-// use App\Http\Middleware\TrimStrings;
-// use App\Http\Middleware\EncryptCookies;
-// use App\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Foundation\Http\Middleware\TrimStrings;
+use App\Http\Middleware\EncryptCookies;
+use App\Http\Middleware\VerifyCsrfToken;
 // use App\Http\Middleware\Authenticate;
 // use App\Http\Middleware\RedirectIfAuthenticated;
 // use Fruitcake\Cors\HandleCors;
@@ -41,7 +41,7 @@ class Kernel extends HttpKernel
         // HandleCors::class,
         // PreventRequestsDuringMaintenance::class,
         ValidatePostSize::class,
-        // TrimStrings::class,
+        TrimStrings::class,
         ConvertEmptyStringsToNull::class,
     ];
 
@@ -52,12 +52,12 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
-            // EncryptCookies::class,
+             EncryptCookies::class,
             AddQueuedCookiesToResponse::class,
             StartSession::class,
             // \Illuminate\Session\Middleware\AuthenticateSession::class,
             ShareErrorsFromSession::class,
-            // VerifyCsrfToken::class,
+            VerifyCsrfToken::class,
             SubstituteBindings::class,
         ],
 

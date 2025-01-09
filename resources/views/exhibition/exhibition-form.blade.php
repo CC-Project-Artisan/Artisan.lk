@@ -23,7 +23,7 @@
                     <div class="form-group row">
                         <label for="exhibition_name" class="col-sm-2 col-form-label star">Exhibition Name</label>
                         <div class="col-sm-10">
-                            <x-compo.input type="text" id="exhibition_name" name="exhibition_name" placeholder="Enter exhibition name" :value="old('exhibition_name')" autofocus />
+                            <x-compo.input type="text" id="exhibition_name" name="exhibition_name" placeholder="Enter exhibition name" :value="old('exhibition_name')" required autofocus />
                         </div>
                     </div>
 
@@ -50,7 +50,13 @@
                     <div id="one_date_input" class="form-group row">
                         <label for="exhibition_date" class="col-sm-2 col-form-label star">Exhibition Date</label>
                         <div class="col-sm-10">
-                            <x-compo.input type="date" id="exhibition_date" name="exhibition_date" placeholder="Exhibition Date" required />
+                            <x-compo.input
+                                type="date"
+                                id="exhibition_date"
+                                name="exhibition_date"
+                                placeholder="Exhibition Date"
+                                min="{{ date('Y-m-d') }}"
+                                required />
                         </div>
                     </div>
 
@@ -74,7 +80,12 @@
                     <div class="form-group row">
                         <label for="start_time" class="col-sm-2 col-form-label star">Start Time</label>
                         <div class="col-sm-10">
-                            <x-compo.input type="time" id="start_time" name="start_time" placeholder="Start Time" required />
+                            <x-compo.input
+                                type="time"
+                                id="start_time"
+                                name="start_time"
+                                onchange="validateTime(this)"
+                                required />
                         </div>
                     </div>
 
@@ -82,7 +93,13 @@
                     <div class="form-group row">
                         <label for="end_time" class="col-sm-2 col-form-label star">End Time</label>
                         <div class="col-sm-10">
-                            <x-compo.input type="time" id="end_time" name="end_time" placeholder="End Time" required />
+                            <x-compo.input 
+                            type="time" 
+                            id="end_time" 
+                            name="end_time" 
+                            placeholder="End Time" 
+                            onchange="validateTime(this)"
+                            required />
                         </div>
                     </div>
 
@@ -165,6 +182,49 @@
                     </div>
                 </div>
 
+                <h1 class="text-xl mt-10 mb-6">Stall Information</h1>
+                <div class="ml-5">
+                    <!-- Stall Size and Price -->
+                    <div class="form-group row">
+                        <label for="contact-count" class="col-sm-2 col-form-label star">Stall Size</label>
+                        <div class="col-sm-10">
+                            <x-compo.select id="stall-count" name="stall-count" :options="[1 => 'Stall 01', 2 => 'Stall 02', 3 => 'Stall 03']" class="flex-grow-1" style="flex: 0 0 25%;" required />
+                        </div>
+                    </div>
+                    <div id="stall-size-fields">
+                        <div class="form-group row">
+                            <label for="stall_name" class="col-sm-2 col-form-label star">Stall 1</label>
+                            <div class="col-sm-10 gap-2">
+                                <x-compo.input type="text" id="stall-name" name="stall_name" placeholder="Enter stall name (e.g., small stall)" class="flex-grow-1 mb-2" required />
+                                <div class="d-flex gap-2">
+                                    <x-compo.input type="text" id="stall-size" name="stall_size" placeholder="Enter stall size (e.g., 2m x 2m)" class="flex-grow-1" style="flex: 0 0 75%;" required />
+                                    <x-compo.input type="number" id="stall-size-price" name="stall_size_price" placeholder="Enter price" class="flex-grow-1" min="0" style="flex: 0 0 25%;" required />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stall Type and Price -->
+                    <div class="form-group row">
+                        <label for="stall-type" class="col-sm-2 col-form-label star">Stall Type</label>
+                        <div class="col-sm-10">
+                            <x-compo.select id="stall-type-count" name="stall-type-count" :options="[1 => 'Type 01', 2 => 'Type 02', 3 => 'Type 03']" class="flex-grow-1 mb-2" style="flex: 0 0 25%;" required />
+                        </div>
+                    </div>
+                    <div id="stall-type-fields">
+                        <div class="form-group row">
+                            <label for="stall_name" class="col-sm-2 col-form-label star">Type 1</label>
+                            <div class="col-sm-10 gap-2">
+                                <div class="d-flex gap-2 mb-2">
+                                    <x-compo.input type="text" id="stall-type" name="stall_type" placeholder="Enter stall type (e.g., Standard Stall)" class="flex-grow-1" style="flex: 0 0 75%;" required />
+                                    <x-compo.input type="number" id="stall-type-price" name="stall_type_price" placeholder="Enter price" class="flex-grow-1" min="0" style="flex: 0 0 25%;" required />
+                                </div>
+                                <x-compo.textarea id="requirements" name="stall_type_requirements" placeholder="Enter any specific requirements" class="flex-grow-1" style="flex: 0 0 100%;" required></x-compo.textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- exhibitor information -->
                 <h1 class="text-xl mt-10 mb-6">Exhibitor Information</h1>
                 <div class="ml-5">
@@ -172,14 +232,24 @@
                     <div class="form-group row">
                         <label for="registration_start_date" class="col-sm-2 col-form-label">Registration Start Date</label>
                         <div class="col-sm-10">
-                            <x-compo.input type="date" id="registration_start_date" name="registration_start_date" placeholder="Registration Start Date" />
+                            <x-compo.input 
+                            type="date" 
+                            id="registration_start_date" 
+                            name="registration_start_date" 
+                            min="{{ date('Y-m-d') }}"
+                            placeholder="Registration Start Date" />
                         </div>
                     </div>
                     <!-- end date -->
                     <div class="form-group row">
                         <label for="registration_end_date" class="col-sm-2 col-form-label">Registration End Date</label>
                         <div class="col-sm-10">
-                            <x-compo.input type="date" id="registration_end_date" name="registration_end_date" placeholder="Registration End Date" />
+                            <x-compo.input 
+                            type="date" 
+                            id="registration_end_date" 
+                            name="registration_end_date" 
+                            min="{{ date('Y-m-d') }}"
+                            placeholder="Registration End Date" />
                         </div>
                     </div>
 
@@ -351,7 +421,7 @@
     //store data into the session
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('exhibition-form');
-    
+
         function saveFormData() {
             const formData = new FormData(form);
             const formObj = {
@@ -360,7 +430,7 @@
                 emails: [],
                 socialMedia: {}
             };
-    
+
             // Handle regular inputs
             formData.forEach((value, key) => {
                 if (key.startsWith('contact_name') || key.startsWith('contact_telephone')) {
@@ -383,7 +453,7 @@
                     formObj[key] = value;
                 }
             });
-    
+
             // Handle image files
             const imageInput = document.getElementById('image-input');
             if (imageInput && imageInput.files.length > 0) {
@@ -396,7 +466,7 @@
                     });
                 }
             }
-    
+
             // Handle social media checkboxes
             document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
                 if (checkbox.checked && checkbox.name === 'social-media-checkboxes[]') {
@@ -407,17 +477,17 @@
                     }
                 }
             });
-    
+
             sessionStorage.setItem('exhibitionFormData', JSON.stringify(formObj));
         }
-    
+
         // Restore saved data
         function restoreFormData() {
             const savedData = sessionStorage.getItem('exhibitionFormData');
             if (!savedData) return;
-    
+
             const formObj = JSON.parse(savedData);
-    
+
             // Restore regular inputs
             Object.entries(formObj).forEach(([key, value]) => {
                 if (!['images', 'contacts', 'emails', 'socialMedia'].includes(key)) {
@@ -427,7 +497,7 @@
                     }
                 }
             });
-    
+
             // Restore contacts
             if (formObj.contacts.length) {
                 document.getElementById('contact-count').value = formObj.contacts.length;
@@ -439,7 +509,7 @@
                     if (telInput && contact.telephone) telInput.value = contact.telephone;
                 });
             }
-    
+
             // Restore emails
             if (formObj.emails.length) {
                 document.getElementById('email-count').value = formObj.emails.length;
@@ -449,7 +519,7 @@
                     if (emailInput && email) emailInput.value = email;
                 });
             }
-    
+
             // Restore social media
             Object.entries(formObj.socialMedia).forEach(([platform, url]) => {
                 const checkbox = form.querySelector(`input[type="checkbox"][value="${platform}"]`);
@@ -460,7 +530,7 @@
                     if (urlInput) urlInput.value = url;
                 }
             });
-    
+
             // Restore image previews
             if (formObj.imagePreviews) {
                 const imagePreview = document.getElementById('image-preview');
@@ -475,14 +545,14 @@
                 });
             }
         }
-    
+
         // Save on input change
         form.addEventListener('input', saveFormData);
         form.addEventListener('change', saveFormData);
-    
+
         // Restore on page load
         restoreFormData();
-    
+
         // Clear storage on successful submission
         form.addEventListener('submit', function() {
             sessionStorage.removeItem('exhibitionFormData');
@@ -617,6 +687,30 @@
         }
     });
 
+    function validateTime(input) {
+        const selectedDate = document.getElementById('exhibition_date').value;
+        const today = new Date().toISOString().split('T')[0];
+
+        if (selectedDate === today) {
+            const now = new Date();
+            const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+            input.min = currentTime;
+
+            if (input.value < currentTime) {
+                input.value = currentTime;
+            }
+        } else {
+            input.min = '';
+        }
+    }
+
+    // Validate on date change
+    document.getElementById('exhibition_date').addEventListener('change', function() {
+        validateTime(document.getElementById('start_time'));
+        validateTime(document.getElementById('end_time'));
+
+    });
+
     // email number selecetion
     document.getElementById('email-count').addEventListener('change', function() {
         const count = parseInt(this.value);
@@ -634,6 +728,61 @@
             `;
             emailFields.appendChild(fieldGroup);
         }
+    });
+
+    //stall selection
+    document.addEventListener('DOMContentLoaded', function() {
+        const stallCountSelect = document.getElementById('stall-count');
+        const stallSizeFields = document.getElementById('stall-size-fields');
+        const stallTypeCountSelect = document.getElementById('stall-type-count');
+        const stallTypeFields = document.getElementById('stall-type-fields');
+
+        function updateStallSizeFields() {
+            const count = parseInt(stallCountSelect.value);
+            stallSizeFields.innerHTML = '';
+            for (let i = 1; i <= count; i++) {
+                const fieldHTML = `
+                    <div class="form-group row">
+                        <label for="stall_name_${i}" class="col-sm-2 col-form-label star">Stall ${i}</label>
+                        <div class="col-sm-10 gap-2">
+                            <x-compo.input type="text" id="stall_name_${i}" name="stall_name_${i}" placeholder="Enter stall name (e.g., small stall)" class="flex-grow-1 mb-2" required />
+                            <div class="d-flex gap-2">
+                                <x-compo.input type="text" id="stall_size_${i}" name="stall_size_${i}" placeholder="Enter stall size (e.g., 2m x 2m)" class="flex-grow-1" style="flex: 0 0 75%;" required />
+                                <x-compo.input type="number" id="stall_size_price_${i}" name="stall_size_price_${i}" placeholder="Enter price" class="flex-grow-1" min="0" style="flex: 0 0 25%;" required />
+                            </div>
+                        </div>
+                    </div>
+                `;
+                stallSizeFields.insertAdjacentHTML('beforeend', fieldHTML);
+            }
+        }
+
+        function updateStallTypeFields() {
+            const count = parseInt(stallTypeCountSelect.value);
+            stallTypeFields.innerHTML = '';
+            for (let i = 1; i <= count; i++) {
+                const fieldHTML = `
+                    <div class="form-group row">
+                        <label for="stall_type_${i}" class="col-sm-2 col-form-label star">Type ${i}</label>
+                        <div class="col-sm-10 gap-2">
+                            <div class="d-flex gap-2 mb-2">
+                                <x-compo.input type="text" id="stall_type_${i}" name="stall_type_${i}" placeholder="Enter stall type (e.g., Standard Stall)" class="flex-grow-1" style="flex: 0 0 75%;" required />
+                                <x-compo.input type="number" id="stall_type_price_${i}" name="stall_type_price_${i}" placeholder="Enter price" class="flex-grow-1" min="0" style="flex: 0 0 25%;" required />
+                            </div>
+                            <x-compo.textarea id="requirements_${i}" name="stall_type_requirements_${i}" placeholder="Enter any specific requirements" class="flex-grow-1" style="flex: 0 0 100%;" required></x-compo.textarea>
+                        </div>
+                    </div>
+                `;
+                stallTypeFields.insertAdjacentHTML('beforeend', fieldHTML);
+            }
+        }
+
+        stallCountSelect.addEventListener('change', updateStallSizeFields);
+        stallTypeCountSelect.addEventListener('change', updateStallTypeFields);
+
+        // Initialize fields on page load
+        updateStallSizeFields();
+        updateStallTypeFields();
     });
 
     // social media links

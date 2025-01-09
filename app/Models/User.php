@@ -49,10 +49,34 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'sender_id')
+            ->orWhere('receiver_id', $this->id);
+    }
+
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function receivedMessages()
+    {
+        return $this->hasMany(Message::class, 'receiver_id');
+    }
     
     public function vendor()
     {
         return $this->hasOne(Vendor::class);
     }
+    
+    
+    public function cartItems()
+    {
+        return $this->hasMany(Cart::class);
+    }
+   
+  
 
 }

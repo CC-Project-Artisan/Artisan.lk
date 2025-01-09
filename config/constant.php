@@ -1,9 +1,15 @@
 <?php
 
-//Define roles
-define('ADMIN', 'admin');
-define('USER', 'user');
-define('VENDOR', 'vendor');
+// Define roles
+if (!defined('ADMIN')) {
+    define('ADMIN', 'admin');
+}
+if (!defined('USER')) {
+    define('USER', 'user');
+}
+if (!defined('VENDOR')) {
+    define('VENDOR', 'vendor');
+}
 
 return [
     'ADMIN' => 'admin',

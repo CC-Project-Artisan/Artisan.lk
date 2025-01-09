@@ -26,7 +26,7 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        // Fill the authenticated user's model with the validated data from the request
+        //Fill the authenticated user's model with the validated data from the request
         $request->user()->fill($request->validated());
     
         // If the email field has been changed, set the email_verified_at field to null

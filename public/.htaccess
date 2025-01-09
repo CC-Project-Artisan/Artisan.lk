@@ -9,6 +9,12 @@
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
+
+     # Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
+     <LimitExcept GET POST PUT DELETE PATCH OPTIONS>
+         Deny from all
+    </LimitExcept>
+
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$

@@ -8,6 +8,7 @@ use App\Notifications\ExhibitionAccepted;
 use App\Notifications\ExhibitionRejected;
 use App\Notifications\ExhibitionActivated;
 use App\Notifications\ExhibitionDeactivated;
+use Carbon\Carbon;
 
 class ExhibitionStatus extends Component
 {
@@ -30,10 +31,11 @@ class ExhibitionStatus extends Component
     {
         $this->exhibition = Exhibition::with('user')->find($this->exhibitionId);
         if ($this->exhibition) {
-            $this->exhibition->status = 'approved'; 
+            $this->exhibition->status = 'approved';
+            $this->exhibition->status_updated_at = Carbon::now();
             $this->exhibition->save();
             $this->status = 'approved';
-            session()->flash('message', 'Exhibition approved successfully.');
+            session()->flash('message', 'Exhibition accepted successfully. Please complete the payment.');
 
             // Send notification to the user
             if ($this->exhibition->user) {
@@ -48,6 +50,7 @@ class ExhibitionStatus extends Component
         $this->exhibition = Exhibition::with('user')->find($this->exhibitionId);
         if ($this->exhibition) {
             $this->exhibition->status = 'rejected';
+            $this->exhibition->status_updated_at = Carbon::now();
             $this->exhibition->save();
             $this->status = 'rejected';
             session()->flash('message', 'Exhibition rejected successfully.');
@@ -66,6 +69,7 @@ class ExhibitionStatus extends Component
         if ($this->exhibition) {
             // Toggle the isActive status
             $this->exhibition->isActive = !$this->exhibition->isActive;
+            $this->exhibition->status_updated_at = Carbon::now();
             $this->exhibition->save();
 
             $this->isActive = $this->exhibition->isActive;

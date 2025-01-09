@@ -2,7 +2,7 @@
 <header class="main-nav" id="main-nav">
     <a href="{{ route('welcome') }}" class="main-logo">{{config('app.name')}}</a>
 
-    <!-- Hamburger Icon for Mobile Toggle -->
+   
     <div class="menu-toggle" id="menu-toggle">
         <i class="fas fa-bars"></i>
     </div>
@@ -18,7 +18,8 @@
     </nav>
 
     <div class="main-icons">
-        <a href="#"><i class="fas fa-search"></i></a>
+        <a href="javascript:void(0)" onclick="toggleSearchModal()"><i class="fas fa-search"></i></a>
+
         <a href="{{route('pages.cart')}}"><i class="fas fa-shopping-cart"></i></a>
         <a href="{{ route('login') }}"><i class="fas fa-user"></i></a>
     </div>

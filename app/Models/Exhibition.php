@@ -40,6 +40,7 @@ class Exhibition extends Model
         'description',
         'isActive',
         'status',
+        'status_updated_at',
     ];
 
     protected $casts = [
@@ -61,5 +62,11 @@ class Exhibition extends Model
     public function emails()
     {
         return $this->hasMany(ExhibitionEmail::class);
+    }
+
+    // Relationship with Stalls
+    public function stalls()
+    {
+        return $this->hasMany(ExhibitionStall::class);
     }
 }

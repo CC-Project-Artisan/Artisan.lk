@@ -12,19 +12,21 @@
 <div class="main-content">
 
     <main class="px-[50px] py-0 grid grid-cols-1 border-gray-300 sm:grid-cols-2 md:grid-cols-2">
-        @for ($i = 0; $i < 10; $i++)
-            @include('exhibition.exhibition-card')
-        @endfor
+        @foreach ($exhibitions as $exhibition)
+        @if($exhibition->status === 'approved' && $exhibition->isActive)
+        @include('exhibition.exhibition-card')
+        @endif
+        @endforeach
     </main>
 
-            <aside class="sidebar">
-                <div class="ud-advert-keyword-wrapper flex-[50%] mb-4">
-                    <div class="flex">
-                        <x-compo.input value="" type="text" placeholder="Exhibition name" class="ud-advert-keyword-input" />
-                        <a href="#"><i class="ud-advert-keyword-search fa-solid fa-magnifying-glass"></i></a>
-                    </div>
-                </div>
-                <!-- <div class="ud-advert-keyword-wrapper flex-[50%] mb-5">
+    <aside class="sidebar">
+        <div class="ud-advert-keyword-wrapper flex-[50%] mb-4">
+            <div class="flex">
+                <x-compo.input value="" type="text" placeholder="Exhibition name" class="ud-advert-keyword-input" />
+                <a href="#"><i class="ud-advert-keyword-search fa-solid fa-magnifying-glass"></i></a>
+            </div>
+        </div>
+        <!-- <div class="ud-advert-keyword-wrapper flex-[50%] mb-5">
             <p class="mt-2 mb-2">Keyword</p>
             <div class="flex">
                 <x-compo.input value="" type="text" placeholder="Location" class="ud-advert-keyword-input" />
@@ -32,25 +34,25 @@
             </div>
         </div> -->
 
-                <div class="filter-section">
-                    <h3 class="section-title mb-3">Filter</h3>
+        <div class="filter-section">
+            <h3 class="section-title mb-3">Filter</h3>
 
-                    <x-compo.input value="" type="date" class="ud-advert-keyword-input" />
+            <x-compo.input value="" type="date" class="ud-advert-keyword-input" />
 
-                    <button class="apply-button mt-3">Apply</button>
-                </div>
+            <button class="apply-button mt-3">Apply</button>
+        </div>
 
-                <div class="categories-section">
-                    <h3 class="section-title">Categories</h3>
-                    <ul class="categories-list">
-                        <li><a href="#" class="shop-category-item">Mask (10)</a></li>
-                        <li><a href="#" class="shop-category-item">Jewelry (6)</a></li>
-                        <li><a href="#" class="shop-category-item">Batik & Silk (11)</a></li>
-                        <li><a href="#" class="shop-category-item">Paintings (12)</a></li>
-                        <li><a href="#" class="shop-category-item">Pottery (30)</a></li>
-                    </ul>
-                </div>
-            </aside>
+        <div class="categories-section">
+            <h3 class="section-title">Categories</h3>
+            <ul class="categories-list">
+                <li><a href="#" class="shop-category-item">Mask (10)</a></li>
+                <li><a href="#" class="shop-category-item">Jewelry (6)</a></li>
+                <li><a href="#" class="shop-category-item">Batik & Silk (11)</a></li>
+                <li><a href="#" class="shop-category-item">Paintings (12)</a></li>
+                <li><a href="#" class="shop-category-item">Pottery (30)</a></li>
+            </ul>
+        </div>
+    </aside>
 </div>
 
 

@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
 @section('pages')
-<div id="customCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+<div id="customCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000" data-bs-keyboard="false">
 
     <div class="carousel-indicators">
         <button type="button" data-bs-target="#customCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>

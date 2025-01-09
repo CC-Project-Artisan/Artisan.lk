@@ -63,4 +63,13 @@ class CategoryController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Category deleted successfully!');
     }
+
+    public function showSearchModal()
+{
+    $categories = Category::all(['id', 'name']); // Fetch all categories
+    return view('layouts.frontend', compact('categories')); // Pass categories to the view
+}
+    
+
+
 }

@@ -43,11 +43,12 @@
                 <h1 class="text-xl mt-10 mb-6">Select Tickets</h1>
                 <div class="ml-5">
                     <!-- Display ticket prices -->
-                    <div class="ticket-price-info flex flex-col md:flex-row md:gap-24 mb-4">                        <p><strong>Adult Ticket:</strong>  USD</p>
-                        <p><strong>Student Ticket:</strong>  USD</p>
-                        <p><strong>Child Ticket:</strong>  USD</p>
+                    <div class="ticket-price-info flex flex-col md:flex-row md:gap-24 mb-4">
+                        <p><strong>Adult Ticket:</strong> USD</p>
+                        <p><strong>Student Ticket:</strong> USD</p>
+                        <p><strong>Child Ticket:</strong> USD</p>
                     </div>
-                    
+
                     <div class="form-group row">
                         <label for="adult_tickets" class="col-sm-2 col-form-label">Adult Tickets</label>
                         <div class="col-sm-10">
