@@ -28,7 +28,7 @@ class ExhibitionController extends Controller
 
     // create exhibition
     public function store(Request $request)
-    {
+    {   
         $messages = [
             'exhibition_name.required' => 'Exhibition name is required',
             'exhibition_description.required' => 'Exhibition description is required',

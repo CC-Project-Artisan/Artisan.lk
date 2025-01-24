@@ -41,6 +41,8 @@ class Exhibition extends Model
         'isActive',
         'status',
         'status_updated_at',
+        'latitude',
+        'longitude',
     ];
 
     protected $casts = [
