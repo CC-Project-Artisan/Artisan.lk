@@ -151,6 +151,7 @@ class VendorController extends Controller
         return redirect()->route('dashboard')->with('error', 'Vendor profile not found.');
     }
 
+    // Display the map page
     public function mapPage(Request $request)
     {
         // Query vendors
@@ -171,6 +172,8 @@ class VendorController extends Controller
         ]);
     }
 
+
+    // Fetch latitude and longitude from Google Maps API
     private function fetchCoordinates($address)
     {
         $apiKey = config('services.googleMap.apiKey');
