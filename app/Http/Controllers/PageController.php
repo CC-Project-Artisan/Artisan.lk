@@ -14,6 +14,7 @@ use App\Models\ExhibitionEmail;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderCourierDetails;
+use View;
 
 class PageController extends Controller
 {
@@ -57,6 +58,12 @@ class PageController extends Controller
     {
         $exhibitions = Exhibition::all();
         return view('pages.exhibition', compact('exhibitions'));
+    }
+    
+    public function map()
+    {
+       
+        return view('pages.map' );
     }
 
     //Dashboard

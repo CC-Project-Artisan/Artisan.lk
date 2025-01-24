@@ -11,9 +11,9 @@
         <ul>
             <li><a href="{{ route('welcome') }}">Home</a></li>
             <li><a href="{{ route('pages.shop') }}">Shop</a></li>
-            <li><a href="#">Map</a></li>
+            <li><a href="{{ route('pages.map') }}">Map</a></li>
             <li><a href="{{ route('pages.exhibition') }}">Exhibitions</a></li>
-            <li><a href="{{ route('pages.about') }}">About</a></li>
+            <!-- <li><a href="{{ route(name: 'pages.about') }}">About</a></li> -->
         </ul>
     </nav>
 
@@ -23,7 +23,6 @@
         <a href="{{route('pages.cart')}}"><i class="fas fa-shopping-cart"></i></a>
         <a href="{{ route('login') }}"><i class="fas fa-user"></i></a>
     </div>
-
     <!-- language button -->
 <style>
     .custom-translate {

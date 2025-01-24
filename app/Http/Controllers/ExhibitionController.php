@@ -145,6 +145,20 @@ class ExhibitionController extends Controller
                 }
             }
 
+            // Initialize latitude and longitude
+            $latitude = null;
+            $longitude = null;
+
+            // Fetch latitude and longitude from Google Maps API
+            if ($request->exhibition_location) {
+                $geoData = $this->fetchCoordinates($request->exhibition_location);
+
+                if ($geoData['status'] === 'OK') {
+                    $latitude = $geoData['results'][0]['geometry']['location']['lat'];
+                    $longitude = $geoData['results'][0]['geometry']['location']['lng'];
+                }
+            }
+
             // Create the exhibition
             $exhibition = Exhibition::create([
                 'user_id' => Auth::id(),
@@ -154,6 +168,8 @@ class ExhibitionController extends Controller
                 'start_time' => $request->input('start_time'),
                 'end_time' => $request->input('end_time'),
                 'exhibition_location' => $request->input('exhibition_location'),
+                'latitude' => $latitude,
+                'longitude' => $longitude,
                 'organization_name' => $request->input('organization_name'),
                 'category_name' => $request->input('category_name'),
                 'exhibitionBanner' => json_encode($imageNames),
@@ -220,6 +236,16 @@ class ExhibitionController extends Controller
                 'message' => 'There was an error submitting your application.'
             ], 500); // Internal Server Error
         }
+    }
+
+    // Fetch latitude and longitude from Google Maps API
+    private function fetchCoordinates($address)
+    {
+        $apiKey = config('services.googleMap.apiKey');
+        $geoApiUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=" . urlencode($address) . "&key={$apiKey}";
+        $response = file_get_contents($geoApiUrl);
+
+        return json_decode($response, true);
     }
 
     // Edit exhibition
