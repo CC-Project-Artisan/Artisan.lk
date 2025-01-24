@@ -18,4 +18,6 @@ class EncryptCookies extends Middleware
     {
         return $next($request);
     }
+
+    
 }
