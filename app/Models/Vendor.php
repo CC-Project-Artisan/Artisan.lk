@@ -25,6 +25,8 @@ class Vendor extends Model
         'business_phone',
         'business_email',
         'business_address',
+        'latitude',
+        'longitude',
     ];
 
     public function user()

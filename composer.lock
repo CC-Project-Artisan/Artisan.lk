@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "db9a700a34681cdb495211b9e601e738",
+    "content-hash": "5f7113130660c4e6a4b23c6cb7445243",
     "packages": [
         {
             "name": "brick/math",
@@ -6007,16 +6007,16 @@
         },
         {
             "name": "laravel/breeze",
-            "version": "v2.2.6",
+            "version": "v2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/breeze.git",
-                "reference": "907b12160d1b8b8213e7e2e011987fffb5567edc"
+                "reference": "d59702967b9ae21879df905d691a50132966c4ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/breeze/zipball/907b12160d1b8b8213e7e2e011987fffb5567edc",
-                "reference": "907b12160d1b8b8213e7e2e011987fffb5567edc",
+                "url": "https://api.github.com/repos/laravel/breeze/zipball/d59702967b9ae21879df905d691a50132966c4ff",
+                "reference": "d59702967b9ae21879df905d691a50132966c4ff",
                 "shasum": ""
             },
             "require": {
@@ -6064,7 +6064,7 @@
                 "issues": "https://github.com/laravel/breeze/issues",
                 "source": "https://github.com/laravel/breeze"
             },
-            "time": "2024-11-20T15:01:15+00:00"
+            "time": "2024-12-14T21:21:42+00:00"
         },
         {
             "name": "laravel/pail",
@@ -8102,12 +8102,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.2"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "plugin-api-version": "2.6.0"
 }

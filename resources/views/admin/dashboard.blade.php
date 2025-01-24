@@ -3,7 +3,7 @@
 @section('pages')
 
 <div class="breadcrumb-bar">
-    <div class="breadcrumb-title float-right">
+    <div class="float-right breadcrumb-title">
         Artisan.lk Admin Center
     </div>
 </div>
@@ -11,17 +11,17 @@
     <!-- upper section -->
     <div class="dashboard-path-wrapper">
         <!-- Breadcrumb -->
-        <div class="text-sm text-customGray font-secondaryText mb-4 py-2">
-            <a href="#" class="text-customBrown  hover:underline" onclick="loadPage('dashboard')">Dashboard</a>
+        <div class="py-2 mb-4 text-sm text-customGray font-secondaryText">
+            <a href="#" class="text-customBrown hover:underline" onclick="loadPage('dashboard')">Dashboard</a>
             <span id="breadcrumb"> / Dashboard</span>
         </div>
         <!-- Sign out btn -->
-        <div class="text-sm mb-4">
+        <div class="mb-4 text-sm">
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <x-dropdown-link :href="route('logout')" class="text-customGray hover:underline"
                     onclick="event.preventDefault(); this.closest('form').submit();">
-                    {{ __('Sign out') }} <i class="fa-solid fa-arrow-right-from-bracket ml-1"></i>
+                    {{ __('Sign out') }} <i class="ml-1 fa-solid fa-arrow-right-from-bracket"></i>
                 </x-dropdown-link>
             </form>
         </div>
@@ -30,7 +30,7 @@
     <!-- Dashboard -->
     <div class="user-dashboard-wrapper">
         <!-- Navbar for mobile -->
-        <!-- <div class="bg-customBlue text-white p-4 flex justify-between items-center lg:hidden ">
+        <!-- <div class="flex items-center justify-between p-4 text-white bg-customBlue lg:hidden ">
             <div class="text-lg font-bold">Dashboard</div>
             <button id="menuToggle" class="text-white focus:outline-none">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -43,7 +43,7 @@
 
         <!-- Sidebar for desktop -->
         <div id="sidebar" class="dashboard-sidebar-desktop-wrapper">
-            <ul class="dashboard-sidebar-options flex flex-col text-secondaryText">
+            <ul class="flex flex-col dashboard-sidebar-options text-secondaryText">
                 <li class="u-sidebar-value rounded-t-md hover:rounded-t-md" data-page="dashboard" onclick="loadPage('dashboard')">
                     <i class="fa-regular fa-address-card ud-icon-left"></i>
                     <i class="fa-solid fa-arrow-right-long"></i>
@@ -99,7 +99,7 @@
         <div class="u-dashboard-content-wrapper">
             <!-- Dashboard page -->
             <div id="dashboard" class="ud-page-wrapper ">
-                <div class="ud-dashboard-page bg-white p-6 rounded shadow">
+                <div class="p-6 bg-white rounded shadow ud-dashboard-page">
                     <div class="flex">
                         <div class="ud-profile-image-wrapper">
                             <img src="{{ asset('https://png.pngtree.com/png-clipart/20230927/original/pngtree-man-avatar-image-for-profile-png-image_13001877.png') }}" alt="profile image" class="ud-profile-image">
@@ -107,9 +107,9 @@
                         <div class="pl-2 ml-3">
                             <h2 class="text-[40px] font-bold text-customBrown font-mainText">Hello! {{ ucfirst(explode(' ', Auth::user()->name)[0]) }}</h2>
                             <div class="flex gap-10 text-[#252a34] mb-4 font-secondaryText">
-                                <p class="mt-2"><i class="fa-regular fa-user mr-2"></i>{{ Auth::user()->name }}</p>
-                                <p class="mt-2"><i class="fa-regular fa-envelope mr-2"></i>{{ Auth::user()->email }}</p>
-                                <p class="mt-2"><i class="fa-regular fa-calendar mr-2"></i>Member since {{ Auth::user()->created_at->format('d M Y') }}</p>
+                                <p class="mt-2"><i class="mr-2 fa-regular fa-user"></i>{{ Auth::user()->name }}</p>
+                                <p class="mt-2"><i class="mr-2 fa-regular fa-envelope"></i>{{ Auth::user()->email }}</p>
+                                <p class="mt-2"><i class="mr-2 fa-regular fa-calendar"></i>Member since {{ Auth::user()->created_at->format('d M Y') }}</p>
                             </div>
                             <button class="ud-btn font-secondaryText" onclick="loadPage('personalDetails')">Edit my details</button>
                         </div>
@@ -123,7 +123,7 @@
                                 <div class="absolute top-2 left-2">
                                     <p class="summery-title">Total Exhibitions</p>
                                 </div>
-                                <div class="flex justify-center items-center h-full">
+                                <div class="flex items-center justify-center h-full">
                                     <p class="summary-amount">{{ $totalExhibitions }}</p>
                                 </div>
                                 <div class="summery-icon">
@@ -136,7 +136,7 @@
                                 <div class="absolute top-2 left-2">
                                     <p class="summery-title">Pending Exhibitions</p>
                                 </div>
-                                <div class="flex justify-center items-center h-full">
+                                <div class="flex items-center justify-center h-full">
                                     <p class="summary-amount">{{ $pendingExhibitions }}</p>
                                 </div>
                                 <div class="summery-icon">
@@ -149,7 +149,7 @@
                                 <div class="absolute top-2 left-2">
                                     <p class="summery-title">Total Listings</p>
                                 </div>
-                                <div class="flex justify-center items-center h-full">
+                                <div class="flex items-center justify-center h-full">
                                     <p class="summary-amount">{{ $totalProducts }}</p>
                                 </div>
                                 <div class="summery-icon">
@@ -162,7 +162,7 @@
                                 <div class="absolute top-2 left-2">
                                     <p class="summery-title">Total Users</p>
                                 </div>
-                                <div class="flex justify-center items-center h-full">
+                                <div class="flex items-center justify-center h-full">
                                     <p class="summary-amount">{{ $totalUsers }}</p>
                                 </div>
                                 <div class="summery-icon">
@@ -175,7 +175,7 @@
             </div>
 
             <!-- listings page -->
-            <div id="listings" class="ud-page-wrapper hidden">
+            <div id="listings" class="hidden ud-page-wrapper">
                 <x-compo.search
                     :text="'Category'"
                     :options="['all' => 'All', 'vendor' => 'Vendor', 'user' => 'User']"
@@ -191,7 +191,7 @@
             </div>
 
             <!-- users -->
-            <div id="users" class="ud-page-wrapper hidden">
+            <div id="users" class="hidden ud-page-wrapper">
 
                 <x-compo.search
                     :text="'User'"
@@ -216,7 +216,7 @@
                 @endif
                 @endforeach
                 @else
-                <div class="ud-dashboard-page bg-white p-6 rounded shadow">
+                <div class="p-6 bg-white rounded shadow ud-dashboard-page">
                     <h2 class="text-[40px] font-bold text-customBrown font-mainText">Looking to sell your arts & crafts?</h2>
                     <div class="flex gap-10 text-[#252a34] mb-4 font-secondaryText">
                         <p class="mt-2">Make more money by selling your unique products with Artisan.lk!</p>
@@ -227,8 +227,8 @@
             </div>
 
             <!-- categories -->
-            <div id="category" class="ud-page-wrapper hidden">
-                <div class="ud-presonal-page bg-white p-6 rounded shadow">
+            <div id="category" class="hidden ud-page-wrapper">
+                <div class="p-6 bg-white rounded shadow ud-presonal-page">
                     <h2 class="text-[50px] font-bold text-customBlue">Categories</h2>
                     <span>Manage all product categories efficiently by adding, editing, or deleting categories to organize your products effectively.</span>
                     <div class="tab">
@@ -240,8 +240,8 @@
                         <x-admin.category-form />
                     </div>
                 </div>
-                <div id="tab2" class="tab-content mt-3">
-                    <div class="ud-advert-keyword-wrapper bg-white p-6 mb-3 rounded shadow-inner">
+                <div id="tab2" class="mt-3 tab-content">
+                    <div class="p-6 mb-3 bg-white rounded shadow-inner ud-advert-keyword-wrapper">
                         <p class="mt-2 mb-2"></i>Keyword</p>
                         <div class="flex">
                             <x-compo.input value="" type="text" placeholder="Search category..." class="ud-advert-keyword-input" />
@@ -261,7 +261,7 @@
             </div>
 
             <!-- admin -->
-            <div id="admin" class="ud-page-wrapper bg-white p-6 rounded shadow hidden">
+            <div id="admin" class="hidden p-6 bg-white rounded shadow ud-page-wrapper">
                 <div class="ud-presonal-page">
                     <div class="ud-pro-change">
                         <h2 class="text-[50px] font-bold text-customBlue">Add admin</h2>
@@ -292,7 +292,7 @@
             </div>
 
             <!-- exhibitions -->
-            <div id="exhibitions" class="ud-page-wrapper hidden">
+            <div id="exhibitions" class="hidden ud-page-wrapper">
                 <x-compo.search
                     :text="'Status'"
                     :options="['all' => 'All', 'live' => 'Live', 'pending' => 'Pending', 'rejected' => 'Rejected', 'expired' => 'Expired']"
@@ -329,7 +329,7 @@
             </div>
 
             <!-- My presonal details -->
-            <div id="personalDetails" class="ud-page-wrapper bg-white p-6 rounded shadow hidden">
+            <div id="personalDetails" class="hidden p-6 bg-white rounded shadow ud-page-wrapper">
                 <h2 class="text-[50px] font-bold text-customBlue">Your details</h2>
                 <span>Please keep your details up to date. Your personal data is stored securely. We do not share information with third parties.</span>
 
@@ -338,17 +338,17 @@
 
                     <div class="mb-4">
                         <label for="fullName" class="block text-sm font-medium text-gray-700">Full Name</label>
-                        <input type="text" name="name" id="fullName" placeholder="{{ Auth::user()->name }}" value="{{ old('name', Auth::user()->name) }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <input type="text" name="name" id="fullName" placeholder="{{ Auth::user()->name }}" value="{{ old('name', Auth::user()->name) }}" class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     </div>
 
                     <div class="mb-4">
                         <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
-                        <input type="email" name="email" id="email" placeholder="{{ Auth::user()->email }}" value="{{ old('email', Auth::user()->email) }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <input type="email" name="email" id="email" placeholder="{{ Auth::user()->email }}" value="{{ old('email', Auth::user()->email) }}" class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     </div>
 
                     <div class="mb-4">
                         <label for="mobile" class="block text-sm font-medium text-gray-700">Mobile</label>
-                        <input type="number" name="phone" id="mobile" placeholder="Enter your phone number" value="{{ old('phone', Auth::user()->phone) }}" min="0" oninput="this.value = Math.abs(this.value)" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <input type="number" name="phone" id="mobile" placeholder="Enter your phone number" value="{{ old('phone', Auth::user()->phone) }}" min="0" oninput="this.value = Math.abs(this.value)" class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     </div>
 
                     <!-- Profile Images -->
@@ -364,14 +364,14 @@
                     </div> -->
 
                     <div>
-                        <button type="submit" id="submitButton" class="ud-btn bg-blue-500 text-red">Save my details</button>
+                        <button type="submit" id="submitButton" class="bg-blue-500 ud-btn text-red">Save my details</button>
                     </div>
                 </form>
             </div>
 
             <!-- Account security page -->
-            <div id="accountSecurity" class="ud-page-wrapper hidden">
-                <div class="ud-security-page bg-white p-6 rounded shadow">
+            <div id="accountSecurity" class="hidden ud-page-wrapper">
+                <div class="p-6 bg-white rounded shadow ud-security-page">
                     <div class="ud-pw-change">
                         <h2 class="text-[50px] font-bold text-customBlue">Your password</h2>
                         <span>Please make sure to have a secure password with at least 6 characters long.</span>
@@ -381,19 +381,19 @@
 
                             <div>
                                 <x-input-label for="update_password_current_password" :value="__('Current Password')" class="star" />
-                                <x-text-input id="update_password_current_password" name="current_password" type="password" class="mt-1 block w-full" autocomplete="current-password" />
+                                <x-text-input id="update_password_current_password" name="current_password" type="password" class="block w-full mt-1" autocomplete="current-password" />
                                 <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
                             </div>
 
                             <div>
                                 <x-input-label for="update_password_password" :value="__('New Password')" class="star" />
-                                <x-text-input id="update_password_password" name="password" type="password" class="mt-1 block w-full" autocomplete="new-password" />
+                                <x-text-input id="update_password_password" name="password" type="password" class="block w-full mt-1" autocomplete="new-password" />
                                 <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
                             </div>
 
                             <div>
                                 <x-input-label for="update_password_password_confirmation" :value="__('Confirm Password')" class="star" />
-                                <x-text-input id="update_password_password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="new-password" />
+                                <x-text-input id="update_password_password_confirmation" name="password_confirmation" type="password" class="block w-full mt-1" autocomplete="new-password" />
                                 <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
                             </div>
                             <button type="submit" class="ud-btn">Change password</button>
@@ -401,12 +401,12 @@
                     </div>
                 </div>
                 <!-- Delete account -->
-                <div class="ud-security-page bg-white p-6 rounded shadow">
+                <div class="p-6 bg-white rounded shadow ud-security-page">
                     <div class="ud-dlt-acc ">
                         <h2 class="text-[50px] font-bold text-red">Delete account</h2>
                         <span>Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.</span>
                     </div>
-                    <button type="submit" class="ud-btn mt-3" x-data=""
+                    <button type="submit" class="mt-3 ud-btn" x-data=""
                         x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')">Delete my account</button>
                 </div>
 
@@ -430,13 +430,13 @@
                                 id="password"
                                 name="password"
                                 type="password"
-                                class="mt-1 block w-3/4"
+                                class="block w-3/4 mt-1"
                                 placeholder="{{ __('Password') }}" />
 
                             <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
                         </div>
 
-                        <div class="mt-6 flex justify-end">
+                        <div class="flex justify-end mt-6">
                             <x-secondary-button x-on:click="$dispatch('close')">
                                 {{ __('Cancel') }}
                             </x-secondary-button>
