@@ -7,7 +7,7 @@
     // Google Maps initialization function
     function initMap() {
         // Get vendors passed from Livewire as JSON
-        const vendors = @json($vendors);
+        const vendors = @json($locations ?? []);
 
         // Log vendors to console for debugging
         console.log(vendors);
@@ -20,14 +20,8 @@
             zoom: 9,
         });
 
-        // Check if there are any vendors to display
-        if (vendors.length === 0) {
-            console.warn("No vendors found to display on the map.");
-        }
-
         // Add markers for each vendor
         vendors.forEach((vendor) => {
-            // Validate latitude and longitude
             if (!vendor.latitude || !vendor.longitude) {
                 console.warn(`Invalid coordinates for vendor: ${vendor.business_name}`);
                 return;
@@ -47,7 +41,6 @@
                           </div>`,
             });
 
-            // Show info window on marker click
             marker.addListener('click', () => {
                 infoWindow.open(map, marker);
             });

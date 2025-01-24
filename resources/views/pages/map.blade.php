@@ -20,7 +20,7 @@
     <div class="search-container mb-6">
         <h3 class="text-2xl font-semibold mb-4">Customize Your Artisan Search</h3>
         <form method="GET" action="{{ route('pages.map') }}" class="search-form grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <input 
+            <!-- <input 
                 type="text" 
                 name="keyword" 
                 placeholder="Keyword" 
@@ -33,7 +33,7 @@
                 placeholder="Location" 
                 value="{{ request('location') }}" 
                 class="p-2 border rounded w-full"
-            >
+            > -->
             <select 
         name="category" 
         class="p-2 border rounded w-full"

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Vendor;
+use App\Models\Exhibition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,12 +29,7 @@ class VendorController extends Controller
 
         // Fetch latitude and longitude from Google Maps API
         if ($request->business_address) {
-            $apiKey = config('services.googleMap.apiKey');
-            $address = urlencode($request->business_address);
-            $geoApiUrl = "https://maps.googleapis.com/maps/api/geocode/json?address={$address}&key={$apiKey}";
-
-            $response = file_get_contents($geoApiUrl);
-            $geoData = json_decode($response, true);
+            $geoData = $this->fetchCoordinates($request->business_address);
 
             if ($geoData['status'] === 'OK') {
                 $latitude = $geoData['results'][0]['geometry']['location']['lat'];
@@ -60,8 +56,52 @@ class VendorController extends Controller
         $user->role = 'vendor';
         $user->save();
 
-        // Redirect to the vendor dashboard
         return redirect()->route('dashboard')->with('success', 'Vendor profile created successfully.');
+    }
+
+    public function registerExhibition(Request $request)
+    {
+        $request->validate([
+            'exhibition_name' => 'required|string|max:255',
+            'exhibition_description' => 'nullable|string',
+            'exhibition_location' => 'required|string',
+            'exhibition_date' => 'required|date',
+            'start_time' => 'required',
+            'end_time' => 'required',
+            'organization_name' => 'nullable|string',
+        ]);
+
+        // Initialize latitude and longitude
+        $latitude = null;
+        $longitude = null;
+
+        // Fetch latitude and longitude from Google Maps API
+        if ($request->exhibition_location) {
+            $geoData = $this->fetchCoordinates($request->exhibition_location);
+
+            if ($geoData['status'] === 'OK') {
+                $latitude = $geoData['results'][0]['geometry']['location']['lat'];
+                $longitude = $geoData['results'][0]['geometry']['location']['lng'];
+            }
+        }
+
+        // Save the exhibition to the database
+        $exhibition = new Exhibition([
+            'user_id' => Auth::id(),
+            'exhibition_name' => $request->exhibition_name,
+            'exhibition_description' => $request->exhibition_description,
+            'exhibition_location' => $request->exhibition_location,
+            'latitude' => $latitude,
+            'longitude' => $longitude,
+            'exhibition_date' => $request->exhibition_date,
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time,
+            'organization_name' => $request->organization_name,
+        ]);
+
+        $exhibition->save();
+
+        return redirect()->route('dashboard')->with('success', 'Exhibition registered successfully.');
     }
 
     public function updateStoreDetails(Request $request)
@@ -85,12 +125,7 @@ class VendorController extends Controller
 
             // Fetch latitude and longitude from Google Maps API
             if ($request->business_address) {
-                $apiKey = config('services.googleMap.apiKey');
-                $address = urlencode($request->business_address);
-                $geoApiUrl = "https://maps.googleapis.com/maps/api/geocode/json?address={$address}&key={$apiKey}";
-
-                $response = file_get_contents($geoApiUrl);
-                $geoData = json_decode($response, true);
+                $geoData = $this->fetchCoordinates($request->business_address);
 
                 if ($geoData['status'] === 'OK') {
                     $latitude = $geoData['results'][0]['geometry']['location']['lat'];
@@ -99,16 +134,16 @@ class VendorController extends Controller
             }
 
             // Update vendor details
-            $vendor->business_name = $request->business_name;
-            $vendor->business_description = $request->business_description;
-            $vendor->business_category = $request->business_category;
-            $vendor->business_phone = $request->business_phone;
-            $vendor->business_email = $request->business_email;
-            $vendor->business_address = $request->business_address;
-            $vendor->latitude = $latitude;
-            $vendor->longitude = $longitude;
-
-            $vendor->save();
+            $vendor->update([
+                'business_name' => $request->business_name,
+                'business_description' => $request->business_description,
+                'business_category' => $request->business_category,
+                'business_phone' => $request->business_phone,
+                'business_email' => $request->business_email,
+                'business_address' => $request->business_address,
+                'latitude' => $latitude,
+                'longitude' => $longitude,
+            ]);
 
             return redirect()->route('dashboard')->with('success', 'Store details updated successfully.');
         }
@@ -118,29 +153,30 @@ class VendorController extends Controller
 
     public function mapPage(Request $request)
     {
-        // Start with the base query
-        $query = Vendor::query();
+        // Query vendors
+        $vendors = Vendor::whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->get();
 
-        // Apply filters based on search inputs
-        if ($request->keyword) {
-            $query->where('business_name', 'like', '%' . $request->keyword . '%');
-        }
-
-        if ($request->location) {
-            $query->where('business_address', 'like', '%' . $request->location . '%');
-        }
-
-        if ($request->category && $request->category !== '') {
-            $query->where('business_category', $request->category);
-        }
-
-        // Ensure valid latitude and longitude
-        $vendors = $query->whereNotNull('latitude')->whereNotNull('longitude')->get();
+        // Query exhibitions
+        $exhibitions = Exhibition::whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->get();
 
         // Pass data to the map view
         return view('pages.map', [
             'vendors' => $vendors,
+            'exhibitions' => $exhibitions,
             'apiKey' => config('services.googleMap.apiKey'),
         ]);
+    }
+
+    private function fetchCoordinates($address)
+    {
+        $apiKey = config('services.googleMap.apiKey');
+        $geoApiUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=" . urlencode($address) . "&key={$apiKey}";
+        $response = file_get_contents($geoApiUrl);
+
+        return json_decode($response, true);
     }
 }
