@@ -20,9 +20,7 @@ use Illuminate\Support\Facades\URL;
 
 // Route::get('/map', action: \App\Http\Livewire\GoogleMap::class)->name('pages.map');
 
-if (env('APP_ENV') === 'production') {
-    URL::forceSchema('https');
-}
+URL::forceSchema('https');
 
 Route::get('/map', [PageController::class, 'map'])->name('pages.map');
 Route::get('/map', [VendorController::class, 'mapPage'])->name('pages.map');
