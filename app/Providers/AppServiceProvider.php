@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('categories', Category::all(['id', 'name']));
         });
 
-        if (config('app.env') === 'production') {
+        if (config('APP_ENV') === 'production') {
             URL::forceScheme('https');
         }
     
