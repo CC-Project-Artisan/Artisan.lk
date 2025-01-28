@@ -174,6 +174,7 @@
                     @forelse ($products as $product)
                         <div class="mb-4">
                             <x-vendor.vendor-ad :product="$product" />
+                            
                         </div>
                     @empty
                         <div class="ud-empty-body">
