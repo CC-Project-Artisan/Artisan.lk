@@ -14,13 +14,10 @@ use App\Http\Controllers\WebhookController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ExhibitionController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\URL;
 //php use App\Http\Livewire\GoogleMap;
 
 
 // Route::get('/map', action: \App\Http\Livewire\GoogleMap::class)->name('pages.map');
-
-URL::forceSchema('https');
 
 Route::get('/map', [PageController::class, 'map'])->name('pages.map');
 Route::get('/map', [VendorController::class, 'mapPage'])->name('pages.map');
