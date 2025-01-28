@@ -20,7 +20,7 @@
                 <p>Krafti comes with a captivating template collection, including twelve stunning and completely flexible homepage layouts which can be on your new site this very day!</p>
                 <br>
                 <br>
-                <a href="/products" class="btn custom-view-more-btn">VIEW MORE</a>
+                <a href="shop" class="btn custom-view-more-btn">VIEW MORE</a>
 
             </div>
         </div>
@@ -35,7 +35,7 @@
                 <p>Explore exclusive items crafted by skilled artisans, perfect for adding beauty to your life.</p>
                 <br>
                 <br> 
-                <a href="/products" class="btn custom-view-more-btn">VIEW MORE</a>
+                <a href="/shop" class="btn custom-view-more-btn">VIEW MORE</a>
             </div>
         </div>
 
@@ -49,7 +49,7 @@
                 <p>Your support empowers Sri Lankan artists to continue creating unique masterpieces.</p>
                 <br>
                 <br>
-                <a href="/products" class="btn custom-view-more-btn">VIEW MORE</a>
+                <a href="/shop" class="btn custom-view-more-btn">VIEW MORE</a>
             </div>
         </div>
     </div>
@@ -94,21 +94,21 @@
                 </svg>
             </div>
             <h2 style="font-family: 'Alegreya', serif;">WITH HOME IN MIND</h2>
-            <p style="font-family: 'Lato', sans-serif;">Lorem ipsum dolor sit amet a con sectet adipisicing elit se do eiusotemp or incidid unt en labore et dolore magna aliqua ut enim minim veniam quis nost exercitation sen sene ullamco aboris nisi ut</p>
+            <p style="font-family: 'Lato', sans-serif;">Explore handcrafted pieces inspired by the warmth and comfort of home. Each creation is designed to bring a touch of elegance and coziness to your living space.</p>
         </div>
         
         
         <div class="feature-sub-items">
             <div class="feature-item">
                 <h3 style="font-family: 'Alegreya', serif;">NEW IDEAS</h3>
-                <p style="font-family: 'Lato', sans-serif; color: #58595b;">Lorem ipsum dolor sit amet a con sectet adipisicing elit se do eiusotemp or incidid unt ut labore et dolore</p>
+                <p style="font-family: 'Lato', sans-serif; color: #58595b;">Dive into innovative designs that blend tradition with modernity. Our curated selection reimagines craftsmanship for a fresh and inspiring perspective.</p>
                 <a href="#" class="feature-link">
                     <span class="underline"></span> VIEW MORE
                 </a>
             </div>
             <div class="feature-item">
                 <h3 style="font-family: 'Alegreya', serif;">CREATIVE SPIRIT</h3>
-                <p style="font-family: 'Lato', sans-serif; color: #58595b;">Lorem ipsum dolor sit amet a con sectet adipisicing elit se do eiusotemp or incidid unt ut labore et dolore</p>
+                <p style="font-family: 'Lato', sans-serif; color: #58595b;">Celebrate the boundless creativity of artisans. From intricate patterns to unique forms, each piece tells a story of imagination and artistry</p>
                 <a href="#" class="feature-link">
                     <span class="underline"></span> VIEW MORE
                 </a>
